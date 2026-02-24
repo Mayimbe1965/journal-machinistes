@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Journal Machiniste — PRO (local) v3.2</title>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#2563eb"/>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --text:#0f172a; --muted:#64748b;
+      --primary:#2563eb; --danger:#b91c1c; --ok:#16a34a; --border:#e2e8f0;
+      --shadow:0 10px 25px rgba(2,6,23,.08); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg); color:var(--text);}
+    .wrap{max-width:560px; margin:22px auto 80px; padding:0 14px;}
+    h1{font-size:22px; margin:8px 0 10px; text-align:center;}
+    .pills{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:0 0 14px;}
+    .pill{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#fff; color:var(--muted);}
+    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:14px; margin:12px 0;}
+    .sub{display:flex; justify-content:space-between; gap:8px; align-items:center; margin-top:-2px; margin-bottom:10px; color:var(--muted); font-size:12px;}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    label{display:block; font-size:12px; color:var(--muted); margin:2px 0 6px;}
+    input, select, textarea{
+      width:100%; padding:12px 12px; border-radius:14px; border:1px solid var(--border);
+      font-size:15px; background:#fff; outline:none;
+    }
+    textarea{min-height:88px; resize:vertical;}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    .check{display:flex; gap:10px; align-items:center; padding:10px 12px; border:1px solid var(--border); border-radius:14px; background:#fff;}
+    .check input{width:auto; transform:scale(1.1);}
+    .hint{font-size:12px; color:var(--muted);}
+    .req{color:var(--danger); font-weight:600;}
+    .err{color:var(--danger); font-size:12px; margin-top:6px; display:none;}
+    .btnrow{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+    button{
+      border:0; border-radius:14px; padding:12px 12px; font-size:15px; font-weight:600; cursor:pointer;
+    }
+    .primary{background:var(--primary); color:#fff;}
+    .secondary{background:#eef2ff; color:#1e3a8a; border:1px solid #dbeafe;}
+    .ghost{background:#fff; color:var(--text); border:1px solid var(--border);}
+    .danger{background:var(--danger); color:#fff;}
+    .mini{font-size:12px; padding:8px 10px; border-radius:12px;}
+    .hr{height:1px; background:var(--border); margin:12px 0;}
+    .list{margin-top:10px;}
+    .item{border:1px solid var(--border); border-radius:14px; padding:12px; background:#fff; margin:8px 0;}
+    .item b{font-size:14px;}
+    .badge{display:inline-block; padding:3px 8px; border-radius:999px; border:1px solid var(--border); font-size:12px; color:var(--muted);}
+    .right{text-align:right;}
+    .warn{color:#92400e;}
+    .ok{color:var(--ok);}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .hidden{display:none;}
+    .smallnote{font-size:11px; color:var(--muted); line-height:1.35;}
+  </style>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Journal Machiniste"/>
+
+<body>
+  <div class="wrap">
+    <h1>Journal Machiniste — <span class="mono">PRO</span> (local)</h1>
+    <div class="pills">
+      <div class="pill">Version v3.2</div>
+      <div class="pill">Données: stockage local navigateur</div>
+      <div class="pill">Export CSV + sauvegarde JSON</div>
+    </div>
+
+    <div class="card" id="cardForm">
+      <div class="sub">
+        <span><b>1) Identification (obligatoire)</b></span>
+        <span class="badge">Opposable / vérifiable</span>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>Date fin service <span class="req">*</span></label>
+          <input id="dateFin" type="date" />
+          <div class="err" id="err_dateFin">Champ obligatoire.</div>
+        </div>
+        <div>
+          <label>Ligne <span class="req">*</span></label>
+          <div class="row" style="gap:8px; align-items:flex-end;">
+            <select id="ligne" aria-label="Ligne">
+              <option value="">— Choisir —</option>
+            </select>
+            <label class="check mini" style="margin:0; user-select:none;">
+              <input id="onlyNoct" type="checkbox" />
+              Noctilien
+            </label>
+          </div>
+          <div class="err" id="err_ligne">Champ obligatoire.</div>
+          <div class="hint">Astuce: coche <b>Noctilien</b> pour réduire la liste aux lignes N.</div>
+        </div>
+
+        <div>
+          <label>Service <span class="req">*</span></label>
+          <input id="service" inputmode="numeric" placeholder="ex: 80, 702..." />
+          <div class="err" id="err_service">Champ obligatoire.</div>
+        </div>
+        <div>
+          <label>Coquille <span class="req">*</span></label>
+          <input id="coquille" inputmode="numeric" placeholder="ex: 4449" />
+          <div class="err" id="err_coquille">Champ obligatoire.</div>
+        </div>
+
+        <div>
+          <label>Police <span class="req">*</span></label>
+          <input id="police" inputmode="numeric" placeholder="ex: 12345" />
+          <div class="err" id="err_police">Champ obligatoire.</div>
+        </div>
+</div>
+
+      <div class="hr"></div>
+
+      <div class="sub">
+        <span><b>2) Horaires (recommandé)</b></span>
+        <span class="badge">Non bloquant</span>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>Début (HHMM)</label>
+          <input id="debut" inputmode="numeric" placeholder="ex: 0622" maxlength="4" />
+        </div>
+        <div>
+          <label>Fin (HHMM)</label>
+          <input id="fin" inputmode="numeric" placeholder="ex: 1342" maxlength="4" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <label class="check" style="margin:0; user-select:none;">
+          <input id="service2x" type="checkbox" />
+          Service en 2×
+        </label>
+        <label class="check" style="margin:0; user-select:none;">
+          <input id="retard" type="checkbox" />
+          Retard
+        </label>
+      </div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Début 2 (HHMM) <span class="hint">(si 2×)</span></label>
+          <input id="debut2" inputmode="numeric" placeholder="ex: 1530" maxlength="4" />
+        </div>
+        <div>
+          <label>Fin 2 (HHMM) <span class="hint">(si 2×)</span></label>
+          <input id="fin2" inputmode="numeric" placeholder="ex: 2150" maxlength="4" />
+        </div>
+        <div>
+          <label>Fin réelle (HHMM) <span class="hint">(si retard)</span></label>
+          <input id="finReelle" inputmode="numeric" placeholder="ex: 1410" maxlength="4" />
+        </div>
+        <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
+          Astuce : si tu ne sais pas l’heure exacte, laisse vide. L’outil reste utile.
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="sub">
+        <span><b>3) Événement / contexte</b></span>
+        <span class="badge">Renfort probatoire</span>
+      </div>
+
+      <div class="row">
+        <label class="check" style="margin:0; user-select:none;">
+          <input id="incident" type="checkbox" />
+          Incident
+        </label>
+        <label class="check" style="margin:0; user-select:none;">
+          <input id="accident" type="checkbox" />
+          Accident
+        </label>
+      </div>
+
+      <div id="flagWrap" class="hidden" style="margin-top:10px;">
+        <label>Flag 621M–619K</label>
+        <select id="flag">
+          <option value="">—</option>
+          <option value="1">Oui (1)</option>
+          <option value="0">Non (0)</option>
+        </select>
+        <div class="hint">Visible uniquement si <b>Incident</b> ou <b>Accident</b> est coché.</div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label>Note</label>
+        <textarea id="note" placeholder="Station, faits marquants, décisions CRIV, etc."></textarea>
+      </div>
+
+      <div class="btnrow">
+        <button class="primary" id="btnSave">Enregistrer</button>
+        <button class="ghost" id="btnReset">Réinitialiser</button>
+      </div>
+
+      <div class="smallnote" style="margin-top:10px;">
+        Champs obligatoires : <b>Date</b>, <b>Ligne</b>, <b>Service</b>, <b>Coquille</b>, <b>Police</b>.
+        <br/>Horaires : recommandés mais non bloquants. Export JSON conseillé (sauvegarde).
+        <br/><span class="mono">Anti-doublon</span> : date + ligne + service + début + fin (si horaires présents).
+        Sinon (horaires absents) : date + ligne + service + coquille + police.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sub">
+        <span><b>Recherche / impression / export</b></span>
+        <span class="badge" id="countBadge">0 enregistrement</span>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>Recherche (date) — affiche le service du jour</label>
+          <input id="searchDate" type="date" />
+          <div class="hint">Tu saisis juste la date → l’appli affiche les infos si elles existent.</div>
+        </div>
+        <div>
+          <label>Contient (texte)</label>
+          <input id="searchText" placeholder="N15, coquille, note..." />
+        </div>
+
+        <div>
+          <label>Filtre ligne</label>
+          <input id="filterLine" placeholder="26, N15..." />
+        </div>
+        <div>
+          <label>Filtre service</label>
+          <input id="filterService" placeholder="80, 702..." />
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Impression / export : du</label>
+          <input id="rangeFrom" type="date" />
+        </div>
+        <div>
+          <label>au</label>
+          <input id="rangeTo" type="date" />
+        </div>
+      </div>
+
+      <div class="btnrow" style="margin-top:12px;">
+        <button class="ghost" id="btnPrintRange">Imprimer plage</button>
+        <button class="ghost" id="btnExportRange">Exporter CSV (plage)</button>
+      </div>
+      <div class="btnrow" style="margin-top:10px;">
+        <button class="secondary" id="btnExportAll">Exporter CSV (tout)</button>
+        <button class="danger" id="btnWipe">⚠ Effacer tout</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="sub">
+        <span><b>Sauvegarde / restauration</b></span>
+        <span class="badge">JSON = copie complète</span>
+      </div>
+
+      <div class="btnrow">
+        <button class="secondary" id="btnJsonExport">Exporter JSON (sauvegarde)</button>
+        <button class="ghost" id="btnJsonImport">Importer JSON (restaurer)</button>
+      </div>
+
+      <div class="btnrow" style="margin-top:10px;">
+        <button class="ghost" id="btnIphone">Conseil iPhone</button>
+        <button class="ghost" id="btnKey">Voir clé anti-doublon</button>
+      </div>
+
+      <input id="jsonFile" type="file" accept="application/json" class="hidden"/>
+
+      <div class="smallnote" style="margin-top:10px;">
+        <b>Compatibilité</b> : fonctionne sur Firefox/Chrome/Safari modernes. Les données restent <b>dans le navigateur</b> (localStorage).
+        Sur Android, c’est identique : chaque navigateur a son stockage propre. Pour partager entre appareils, utilise <b>Exporter JSON</b>.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sub">
+        <span><b>Services enregistrés</b></span>
+        <span class="badge" id="filterBadge">Aucun filtre (0)</span>
+      </div>
+      <div id="searchResult" class="hint" style="margin-bottom:8px;"></div>
+      <div id="list" class="list"></div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const LINES_ALL = ["20","26","29","38","39","40","46","48","56","57","60","69","76","77","80","86","87","96","102","109","115","121","122","129","202","215","245","318","322","341","N01","N02","N13","N41","N42","N43","N44","N45","N51","N52","N53"];
+  const LS_KEY = "journal_machiniste_pro_v32";
+
+  const $ = (id) => document.getElementById(id);
+  const state = { items: [], lastKeyExplain: "" };
+
+  function todayISO() {
+    const d = new Date();
+    const z = new Date(d.getTime() - d.getTimezoneOffset()*60000);
+    return z.toISOString().slice(0,10);
+  }
+  function cleanHHMM(v) { if (!v) return ""; return String(v).replace(/\D/g,"").slice(0,4); }
+  function isValidHHMM(s) {
+    if (!s) return true;
+    if (!/^\d{4}$/.test(s)) return false;
+    const hh = parseInt(s.slice(0,2),10);
+    const mm = parseInt(s.slice(2,4),10);
+    return hh>=0 && hh<=23 && mm>=0 && mm<=59;
+  }
+  function normalizeLine(v) { return String(v||"").trim().toUpperCase(); }
+  function normalizeService(v) { return String(v||"").trim(); }
+
+  function load() {
+    try {
+      // v3.2 : nouvelle clé de stockage (pour évolution sans casser l'ancien)
+      let raw = localStorage.getItem(LS_KEY);
+
+      // Migration automatique depuis v3.1 si v3.2 vide
+      if (!raw) {
+        const old = localStorage.getItem("journal_machiniste_pro_v31");
+        if (old) {
+          raw = old;
+          localStorage.setItem(LS_KEY, old);
+        }
+      }
+
+      state.items = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(state.items)) state.items = [];
+    } catch(e) { state.items = []; }
+  }
+  function save() { localStorage.setItem(LS_KEY, JSON.stringify(state.items)); }
+
+  function formatDateFR(iso) {
+    if (!iso) return "";
+    const [y,m,d] = iso.split("-");
+    return `${d}/${m}/${y}`;
+  }
+
+  function makeKey(item) {
+    const hasHours = item.debut && item.fin;
+    const key = hasHours
+      ? `${item.dateFin}|${item.ligne}|${item.service}|${item.debut}|${item.fin}`
+      : `${item.dateFin}|${item.ligne}|${item.service}|${item.coquille}|${item.police}`;
+    state.lastKeyExplain = hasHours
+      ? "date + ligne + service + début + fin"
+      : "date + ligne + service + coquille + police";
+    return key;
+  }
+
+  function renderCount() {
+    $("countBadge").textContent = `${state.items.length} enregistrement${state.items.length>1?"s":""}`;
+  }
+  function setError(id, show) { $(id).style.display = show ? "block" : "none"; }
+
+  function fillLineSelect() {
+    const noct = $("onlyNoct").checked;
+    const select = $("ligne");
+    const current = select.value;
+    const lines = noct ? LINES_ALL.filter(x => x.startsWith("N")) : LINES_ALL;
+    select.innerHTML = '<option value="">— Choisir —</option>' +
+      lines.map(x => `<option value="${x}">${x}</option>`).join("");
+    if (lines.includes(current)) select.value = current;
+  }
+
+  function getForm() {
+    return {
+      dateFin: $("dateFin").value,
+      ligne: normalizeLine($("ligne").value),
+      service: normalizeService($("service").value),
+      coquille: normalizeService($("coquille").value),
+      police: normalizeService($("police").value),
+      flag: $("flag").value,
+      debut: cleanHHMM($("debut").value),
+      fin: cleanHHMM($("fin").value),
+      service2x: $("service2x").checked ? 1 : 0,
+      retard: $("retard").checked ? 1 : 0,
+      debut2: cleanHHMM($("debut2").value),
+      fin2: cleanHHMM($("fin2").value),
+      finReelle: cleanHHMM($("finReelle").value),
+      incident: $("incident").checked ? 1 : 0,
+      accident: $("accident").checked ? 1 : 0,
+      note: ($("note").value || "").trim(),
+      ts: new Date().toISOString(),
+    };
+  }
+
+  function validate(item) {
+    let ok = true;
+    const required = [
+      ["dateFin","err_dateFin"],
+      ["ligne","err_ligne"],
+      ["service","err_service"],
+      ["coquille","err_coquille"],
+      ["police","err_police"],
+    ];
+    for (const [field, errId] of required) {
+      const v = item[field];
+      const missing = !v || String(v).trim()==="";
+      setError(errId, missing);
+      if (missing) ok = false;
+    }
+    const hhFields = ["debut","fin","debut2","fin2","finReelle"];
+    for (const f of hhFields) {
+      const el = $(f);
+      const v = item[f];
+      const good = isValidHHMM(v);
+      el.style.borderColor = good ? "var(--border)" : "var(--danger)";
+      if (!good) ok = false;
+    }
+    return ok;
+  }
+
+  function resetForm() {
+    $("dateFin").value = todayISO();
+    $("ligne").value = "";
+    $("service").value = "";
+    $("coquille").value = "";
+    $("police").value = "";
+    $("flag").value = "";
+    $("debut").value = "";
+    $("fin").value = "";
+    $("service2x").checked = false;
+    $("retard").checked = false;
+    $("debut2").value = "";
+    $("fin2").value = "";
+    $("finReelle").value = "";
+    $("incident").checked = false;
+    $("accident").checked = false;
+    $("note").value = "";
+    ["err_dateFin","err_ligne","err_service","err_coquille","err_police"].forEach(id=>setError(id,false));
+    ["debut","fin","debut2","fin2","finReelle"].forEach(id=>$(id).style.borderColor="var(--border)");
+    refreshFlagVisibility();
+  }
+    refreshFlagVisibility();
+  }
+
+  function refreshFlagVisibility() {
+    const show = $("incident").checked || $("accident").checked;
+    $("flagWrap").classList.toggle("hidden", !show);
+    // Hygiène : si on retire l’événement, on efface le flag pour éviter un "flag fantôme"
+    if (!show) $("flag").value = "";
+  }
+
+  function upsert(item) {
+    const key = makeKey(item);
+    item.key = key;
+    const idx = state.items.findIndex(x => x.key === key);
+    if (idx >= 0) { state.items[idx] = item; return {mode:"update", key}; }
+    state.items.unshift(item);
+    return {mode:"insert", key};
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function matchesFilters(item) {
+    const sd = $("searchDate").value;
+    const st = ($("searchText").value || "").trim().toLowerCase();
+    const fl = ($("filterLine").value || "").trim().toLowerCase();
+    const fs = ($("filterService").value || "").trim().toLowerCase();
+
+    let ok = true;
+    if (sd) ok = ok && item.dateFin === sd;
+    if (fl) ok = ok && String(item.ligne||"").toLowerCase().includes(fl);
+    if (fs) ok = ok && String(item.service||"").toLowerCase().includes(fs);
+
+    if (st) {
+      const blob = [
+        item.dateFin, item.ligne, item.service, item.coquille, item.police,
+        item.debut, item.fin, item.debut2, item.fin2, item.finReelle,
+        item.flag, item.note, item.incident, item.accident, item.retard
+      ].join(" ").toLowerCase();
+      ok = ok && blob.includes(st);
+    }
+    return ok;
+  }
+
+  function renderSearchByDateMessage() {
+    const sd = $("searchDate").value;
+    const box = $("searchResult");
+    if (!sd) { box.textContent = ""; return; }
+
+    const match = state.items.find(x => x.dateFin === sd);
+    if (!match) {
+      box.innerHTML = `<span class="warn"><b>Aucun service</b> ce jour-là (${formatDateFR(sd)}).</span>`;
+      return;
+    }
+    box.innerHTML = `<span class="ok"><b>Service trouvé</b> pour ${formatDateFR(sd)} : ligne <b>${match.ligne}</b>, service <b>${match.service}</b>, coquille <b>${match.coquille}</b>, police <b>${match.police}</b>.</span>`;
+  }
+
+  function renderList() {
+    renderCount();
+    renderSearchByDateMessage();
+
+    const list = $("list");
+    const filtered = state.items.filter(matchesFilters);
+
+    $("filterBadge").textContent = ( $("searchDate").value || $("searchText").value || $("filterLine").value || $("filterService").value )
+      ? `Filtré (${filtered.length})`
+      : `Aucun filtre (${filtered.length})`;
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="hint">Aucun service pour ce filtre.</div>`;
+      return;
+    }
+
+    list.innerHTML = filtered.map(item => {
+      const tags = [];
+      if (item.incident) tags.push("Incident");
+      if (item.accident) tags.push("Accident");
+      if (item.retard) tags.push("Retard");
+      if (item.service2x) tags.push("2×");
+      const tagHtml = tags.length ? ` · <span class="badge">${tags.join(" · ")}</span>` : "";
+
+      const hours = (item.debut && item.fin) ? `${item.debut}-${item.fin}` : "";
+      const hours2 = (item.service2x && item.debut2 && item.fin2) ? ` / ${item.debut2}-${item.fin2}` : "";
+      const finReelle = (item.retard && item.finReelle) ? ` · fin réelle: ${item.finReelle}` : "";
+
+      const note = item.note ? item.note : "";
+      const flag = (item.flag !== "" && item.flag !== null && item.flag !== undefined) ? item.flag : "";
+
+      return `
+        <div class="item">
+          <div class="row" style="justify-content:space-between;">
+            <div>
+              <b>${formatDateFR(item.dateFin)} — L${item.ligne} / S${item.service}</b>${tagHtml}
+              <div class="hint">Coquille: <b>${item.coquille}</b> · Police: <b>${item.police}</b>${flag!=="" ? ` · 621M–619K: <b>${flag}</b>` : ""}</div>
+              <div class="hint">${hours ? `Horaires: <b>${hours + hours2}</b>${finReelle}` : "Horaires: —"}</div>
+            </div>
+            <div class="right">
+              <button class="ghost mini" data-edit="${item.key}">Éditer</button>
+              <button class="danger mini" data-del="${item.key}">Suppr.</button>
+            </div>
+          </div>
+          ${note ? `<div class="hr"></div><div class="hint"><b>Note</b><br/>${escapeHtml(note).replace(/\n/g,"<br/>")}</div>` : ""}
+          <div class="smallnote">clé: <span class="mono">${item.key}</span></div>
+        </div>
+      `;
+    }).join("");
+
+    list.querySelectorAll("button[data-del]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-del");
+        if (!confirm("Supprimer cet enregistrement ?")) return;
+        state.items = state.items.filter(x => x.key !== key);
+        save();
+        renderList();
+      });
+    });
+
+    list.querySelectorAll("button[data-edit]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-edit");
+        const item = state.items.find(x => x.key === key);
+        if (!item) return;
+
+        $("dateFin").value = item.dateFin || "";
+        $("ligne").value = item.ligne || "";
+        $("service").value = item.service || "";
+        $("coquille").value = item.coquille || "";
+        $("police").value = item.police || "";
+
+        $("debut").value = item.debut || "";
+        $("fin").value = item.fin || "";
+        $("service2x").checked = !!item.service2x;
+        $("retard").checked = !!item.retard;
+        $("debut2").value = item.debut2 || "";
+        $("fin2").value = item.fin2 || "";
+        $("finReelle").value = item.finReelle || "";
+
+        $("incident").checked = !!item.incident;
+        $("accident").checked = !!item.accident;
+        refreshFlagVisibility();
+        $("flag").value = (item.flag===0 || item.flag==="0") ? "0" : (item.flag===1 || item.flag==="1") ? "1" : "";
+        $("note").value = item.note || "";
+
+        window.scrollTo({top:0, behavior:"smooth"});
+      });
+    });
+  }
+
+  function withinRange(dateISO, fromISO, toISO) {
+    if (!fromISO && !toISO) return true;
+    if (fromISO && dateISO < fromISO) return false;
+    if (toISO && dateISO > toISO) return false;
+    return true;
+  }
+
+  function toCSV(items) {
+    const header = [
+      "date_fin_service","ligne","service","coquille","police","flag_621m_619k",
+      "debut_hhmm","fin_hhmm","service_2x","debut2_hhmm","fin2_hhmm",
+      "retard","fin_reelle_hhmm","incident","accident","note","cle_antidoublon","timestamp_iso"
+    ];
+    const esc = (v) => '"' + String(v ?? "").replaceAll('"','""') + '"';
+    const rows = items.map(x => [
+      x.dateFin, x.ligne, x.service, x.coquille, x.police, x.flag,
+      x.debut, x.fin, x.service2x, x.debut2, x.fin2,
+      x.retard, x.finReelle, x.incident, x.accident,
+      (x.note||"").replace(/\r?\n/g,"\\n"),
+      x.key, x.ts
+    ].map(esc).join(","));
+    return header.join(",") + "\n" + rows.join("\n");
+  }
+
+  function download(filename, content, mime) {
+    const blob = new Blob([content], {type: mime});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  }
+
+  function printRange(items) {
+    const w = window.open("", "_blank");
+    const html = `
+      <html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+      <title>Impression — Journal Machiniste</title>
+      <style>
+        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; padding:14px;}
+        h1{font-size:18px;}
+        .item{border:1px solid #ddd; border-radius:12px; padding:10px; margin:10px 0;}
+        .muted{color:#555; font-size:12px;}
+        .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;}
+      </style>  <link rel="apple-touch-icon" href="icon-192.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png"/>
+</head><body>
+      <h1>Journal Machiniste — impression (${items.length} entrées)</h1>
+      ${items.map(x => `
+        <div class="item">
+          <b>${formatDateFR(x.dateFin)} — Ligne ${x.ligne} / Service ${x.service}</b>
+          <div class="muted">Coquille: <b>${x.coquille}</b> · Police: <b>${x.police}</b>${x.flag!=="" && x.flag!=null ? ` · 621M–619K: <b>${x.flag}</b>` : ""}</div>
+          <div class="muted">Horaires: <b>${x.debut && x.fin ? `${x.debut}-${x.fin}` : "—"}</b>${x.service2x && x.debut2 && x.fin2 ? ` / <b>${x.debut2}-${x.fin2}</b>` : ""}${x.retard && x.finReelle ? ` · fin réelle: <b>${x.finReelle}</b>` : ""}</div>
+          ${x.note ? `<div class="muted"><b>Note</b><br/>${escapeHtml(x.note).replace(/\n/g,"<br/>")}</div>` : ""}
+          <div class="muted mono">clé: ${escapeHtml(x.key||"")}</div>
+        </div>
+      `).join("")}
+      <script>window.onload=()=>{window.print();}</script>
+      
+<script>
+  // PWA: service worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    });
+  }
+</script>
+
+</body></html>
+    `;
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+  }
+
+  // events
+  $("onlyNoct").addEventListener("change", fillLineSelect);
+  ["searchDate","searchText","filterLine","filterService"].forEach(id => $(id).addEventListener("input", renderList));
+
+  ["incident","accident"].forEach(id => $(id).addEventListener("change", refreshFlagVisibility));
+
+  $("btnSave").addEventListener("click", () => {
+    const item = getForm();
+    const ok = validate(item);
+    if (!ok) { alert("Vérifie les champs obligatoires et le format HHMM (4 chiffres)."); return; }
+    const r = upsert(item);
+    save();
+    renderList();
+    alert(r.mode==="insert" ? "Enregistré." : "Mis à jour (anti-doublon).");
+  });
+
+  $("btnReset").addEventListener("click", resetForm);
+
+  $("btnExportAll").addEventListener("click", () => {
+    const csv = toCSV(state.items.slice().reverse());
+    download(`journal_machiniste_${todayISO()}_tout.csv`, csv, "text/csv;charset=utf-8");
+  });
+
+  $("btnExportRange").addEventListener("click", () => {
+    const from = $("rangeFrom").value;
+    const to = $("rangeTo").value;
+    const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
+    download(`journal_machiniste_${todayISO()}_plage.csv`, toCSV(items), "text/csv;charset=utf-8");
+  });
+
+  $("btnPrintRange").addEventListener("click", () => {
+    const from = $("rangeFrom").value;
+    const to = $("rangeTo").value;
+    const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
+    printRange(items);
+  });
+
+  $("btnWipe").addEventListener("click", () => {
+    if (!confirm("EFFACER TOUTES les données de ce navigateur ?")) return;
+    if (!confirm("Dernier avertissement : c'est irréversible sans JSON/CSV.")) return;
+    state.items = [];
+    save();
+    renderList();
+  });
+
+  $("btnJsonExport").addEventListener("click", () => {
+    const payload = {version:"v3.2", exported_at:new Date().toISOString(), items: state.items};
+    download(`journal_machiniste_${todayISO()}.json`, JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
+  });
+
+  $("btnJsonImport").addEventListener("click", () => $("jsonFile").click());
+  $("jsonFile").addEventListener("change", async (ev) => {
+    const file = ev.target.files && ev.target.files[0];
+    ev.target.value = "";
+    if (!file) return;
+    try {
+      const payload = JSON.parse(await file.text());
+      if (!payload || !Array.isArray(payload.items)) throw new Error("Format JSON invalide.");
+      state.items = payload.items;
+      save();
+      renderList();
+      alert("JSON importé (restauré).");
+    } catch(e) {
+      alert("Import JSON impossible : " + e.message);
+    }
+  });
+
+  $("btnIphone").addEventListener("click", () => {
+    alert("iPhone (Safari) : 'Partager' → 'Sur l'écran d'accueil' pour l'ouvrir comme une icône.\n\nLes données sont locales à Safari. Pense à exporter JSON régulièrement.");
+  });
+
+  $("btnKey").addEventListener("click", () => {
+    alert("Clé anti-doublon :\n- Avec horaires: date + ligne + service + début + fin\n- Sans horaires: date + ligne + service + coquille + police");
+  });
+
+  // init
+  load();
+  fillLineSelect();
+  resetForm();
+  renderList();
+})();
+</script>
+</body>
+</html>
