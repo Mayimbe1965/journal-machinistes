@@ -180,14 +180,14 @@
       </div>
 
       <div id="flagWrap" class="hidden" style="margin-top:10px;">
-        <label>Flag 621M–619K</label>
-        <select id="flag">
-          <option value="">—</option>
-          <option value="1">Oui (1)</option>
-          <option value="0">Non (0)</option>
-        </select>
-        <div class="hint">Visible uniquement si <b>Incident</b> ou <b>Accident</b> est coché.</div>
-      </div>
+  <label>Flag 621M–619K</label>
+  <select id="flag">
+    <option value="">—</option>
+    <option value="621M">621M</option>
+    <option value="619K">619K</option>
+  </select>
+  <div class="hint">Visible uniquement si Incident ou Accident est coché.</div>
+</div>
 
       <div style="margin-top:10px;">
         <label>Note</label>
@@ -649,6 +649,29 @@
         </div>
       `).join("")}
       <script>window.onload=()=>{window.print();}</script>
+
+  function refreshFlagVisibility(){
+  const inc = document.getElementById("incident")?.checked;
+  const acc = document.getElementById("accident")?.checked;
+  const show = !!(inc || acc);
+
+  const wrap = document.getElementById("flagWrap");
+  if (!wrap) return;
+
+  wrap.classList.toggle("hidden", !show);
+
+  if (!show) {
+    const f = document.getElementById("flag");
+    if (f) f.value = "";
+  }
+}
+
+["incident","accident"].forEach(id=>{
+  const el = document.getElementById(id);
+  if (el) el.addEventListener("change", refreshFlagVisibility);
+});
+
+refreshFlagVisibility();
       
 <script>
   // PWA: service worker
