@@ -4,8 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Journal Machiniste — PRO (local) v3.2</title>
-  <link rel="manifest" href="manifest.json"/>
-  <meta name="theme-color" content="#2563eb"/>
   <style>
     :root{
       --bg:#f6f7fb; --card:#ffffff; --text:#0f172a; --muted:#64748b;
@@ -56,10 +54,7 @@
     .hidden{display:none;}
     .smallnote{font-size:11px; color:var(--muted); line-height:1.35;}
   </style>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-  <meta name="apple-mobile-web-app-title" content="Journal Machiniste"/>
-
+</head>
 <body>
   <div class="wrap">
     <h1>Journal Machiniste — <span class="mono">PRO</span> (local)</h1>
@@ -180,14 +175,14 @@
       </div>
 
       <div id="flagWrap" class="hidden" style="margin-top:10px;">
-  <label>Flag 621M–619K</label>
-  <select id="flag">
-    <option value="">—</option>
-    <option value="621M">621M</option>
-    <option value="619K">619K</option>
-  </select>
-  <div class="hint">Visible uniquement si Incident ou Accident est coché.</div>
-</div>
+        <label>Flag 621M–619K</label>
+        <select id="flag">
+          <option value="">—</option>
+          <option value="621M">621M</option>
+          <option value="619K">619K</option>
+        </select>
+        <div class="hint">Visible uniquement si Incident ou Accident est coché.</div>
+      </div>
 
       <div style="margin-top:10px;">
         <label>Note</label>
@@ -634,10 +629,7 @@
         .item{border:1px solid #ddd; border-radius:12px; padding:10px; margin:10px 0;}
         .muted{color:#555; font-size:12px;}
         .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;}
-      </style>  <link rel="apple-touch-icon" href="icon-192.png"/>
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png"/>
-</head><body>
+      </style></head><body>
       <h1>Journal Machiniste — impression (${items.length} entrées)</h1>
       ${items.map(x => `
         <div class="item">
@@ -649,40 +641,7 @@
         </div>
       `).join("")}
       <script>window.onload=()=>{window.print();}</script>
-
-  function refreshFlagVisibility(){
-  const inc = document.getElementById("incident")?.checked;
-  const acc = document.getElementById("accident")?.checked;
-  const show = !!(inc || acc);
-
-  const wrap = document.getElementById("flagWrap");
-  if (!wrap) return;
-
-  wrap.classList.toggle("hidden", !show);
-
-  if (!show) {
-    const f = document.getElementById("flag");
-    if (f) f.value = "";
-  }
-}
-
-["incident","accident"].forEach(id=>{
-  const el = document.getElementById(id);
-  if (el) el.addEventListener("change", refreshFlagVisibility);
-});
-
-refreshFlagVisibility();
-      
-<script>
-  // PWA: service worker
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(()=>{});
-    });
-  }
-</script>
-
-</body></html>
+      </body></html>
     `;
     w.document.open();
     w.document.write(html);
