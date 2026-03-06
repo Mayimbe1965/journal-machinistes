@@ -429,8 +429,6 @@
     ["debut","fin","debut2","fin2","finReelle"].forEach(id=>$(id).style.borderColor="var(--border)");
     refreshFlagVisibility();
   }
-    refreshFlagVisibility();
-  }
 
   function refreshFlagVisibility() {
     const show = $("incident").checked || $("accident").checked;
@@ -575,7 +573,7 @@
         $("incident").checked = !!item.incident;
         $("accident").checked = !!item.accident;
         refreshFlagVisibility();
-        $("flag").value = (item.flag===0 || item.flag==="0") ? "0" : (item.flag===1 || item.flag==="1") ? "1" : "";
+        $("flag").value = item.flag || "";
         $("note").value = item.note || "";
 
         window.scrollTo({top:0, behavior:"smooth"});
