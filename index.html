@@ -255,6 +255,12 @@
         <button class="ghost" id="btnPrintRange">Imprimer plage</button>
         <button class="ghost" id="btnExportRange">Exporter CSV (plage)</button>
       </div>
+
+      <div class="btnrow" style="margin-top:10px;">
+        <button class="ghost" id="btnPrintWeek">Imprimer semaine</button>
+        <button class="ghost" id="btnExportWeek">Exporter CSV semaine</button>
+      </div>
+
       <div class="btnrow" style="margin-top:10px;">
         <button class="secondary" id="btnExportAll">Exporter CSV (tout)</button>
         <button class="danger" id="btnWipe">⚠ Effacer tout</button>
@@ -657,6 +663,20 @@
     w.document.close();
   }
 
+  function getMonday(dateStr) {
+  const d = new Date(dateStr);
+  const day = d.getDay(); // 0=dimanche, 1=lundi...
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().slice(0, 10);
+  }
+
+  function getSunday(dateStr) {
+  const d = new Date(getMonday(dateStr));
+  d.setDate(d.getDate() + 6);
+  return d.toISOString().slice(0, 10);
+  }
+  
   // events
   $("onlyNoct").addEventListener("change", fillLineSelect);
   ["searchDate","searchText","filterLine","filterService"].forEach(id => $(id).addEventListener("input", renderList));
@@ -787,6 +807,27 @@
     reader.readAsText(file);
 
 });
+
+  $("btnPrintWeek").addEventListener("click", () => {
+  const baseDate = $("searchDate").value || todayISO();
+  const from = getMonday(baseDate);
+  const to = getSunday(baseDate);
+  const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
+  printRange(items);
+});
+
+$("btnExportWeek").addEventListener("click", () => {
+  const baseDate = $("searchDate").value || todayISO();
+  const from = getMonday(baseDate);
+  const to = getSunday(baseDate);
+  const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
+  download(
+    `journal_machiniste_semaine_${from}_${to}.csv`,
+    toCSV(items),
+    "text/csv;charset=utf-8"
+  );
+});
+  
   // init
   load();
   fillLineSelect();
