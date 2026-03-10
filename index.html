@@ -498,6 +498,31 @@
     if (!show) $("flag").value = "";
   }
 
+  function refreshDecalageVisibility() {
+
+    const show = $("decalage").checked;
+
+      $("decalageWrap").classList.toggle("hidden", !show);
+
+    if (!show) {
+      $("decalagePrevDebut").value = "";
+      $("decalagePrevFin").value = "";
+      $("decalageRealDebut").value = "";
+      $("decalageRealFin").value = "";
+      $("decalageNonRealise").checked = false;
+  }
+
+  const disableReal = $("decalageNonRealise").checked;
+
+  $("decalageRealDebut").disabled = disableReal;
+  $("decalageRealFin").disabled = disableReal;
+
+  if (disableReal) {
+    $("decalageRealDebut").value = "";
+    $("decalageRealFin").value = "";
+  }
+
+}
   function upsert(item) {
     const key = makeKey(item);
     item.key = key;
@@ -727,6 +752,10 @@
 
   ["incident","accident"].forEach(id => $(id).addEventListener("change", refreshFlagVisibility));
 
+  $("decalage").addEventListener("change", refreshDecalageVisibility);
+  
+  $("decalageNonRealise").addEventListener("change", refreshDecalageVisibility);
+  
   $("btnSave").addEventListener("click", () => {
     const item = getForm();
     const ok = validate(item);
@@ -876,6 +905,7 @@ $("btnExportWeek").addEventListener("click", () => {
   load();
   fillLineSelect();
   resetForm();
+  refreshDecalageVisibility();
   renderList();
 })();
 </script>
