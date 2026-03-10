@@ -1,5 +1,5 @@
 /* Journal Machiniste PWA — cache offline (statique) */
-const CACHE_NAME = "journal-machiniste-v3-2-1";
+const CACHE_NAME = "journal-machiniste-v3-2-2";
 
 const ASSETS_TO_CACHE = [
   "./",
