@@ -735,7 +735,7 @@
     // EXPORT JSON
   document.getElementById("btnJsonExport").addEventListener("click", () => {
   
-      const data = JSON.parse(localStorage.getItem("journalMachiniste") || "[]");
+      const data = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
   
       const blob = new Blob([JSON.stringify(data, null, 2)], {
           type: "application/json"
@@ -771,7 +771,7 @@
   
               const data = JSON.parse(e.target.result);
   
-              localStorage.setItem("journalMachiniste", JSON.stringify(data));
+              localStorage.setItem(LS_KEY, JSON.stringify(data));
   
               alert("Import réussi !");
               location.reload();
