@@ -136,6 +136,10 @@
           <input id="retard" type="checkbox" />
           Retard
         </label>
+        <label class="check" style="margin:0; user-select:none;">
+          <input id="decalage" type="checkbox" />
+          Décalage
+        </label>
       </div>
 
       <div class="grid2" style="margin-top:10px;">
@@ -155,6 +159,46 @@
           Astuce : si tu ne sais pas l’heure exacte, laisse vide. L’outil reste utile.
         </div>
       </div>
+
+      <div id="decalageWrap" class="hidden" style="margin-top:10px;">
+
+        <div class="sub">
+          <span><b>Décalage</b></span>
+          <span class="badge">Régulation</span>
+        </div>
+
+        <div class="grid2">
+
+        <div>
+          <label>Décalage prévu début (HHMM)</label>
+          <input id="decalagePrevDebut" inputmode="numeric" placeholder="ex: 1015" maxlength="4" />
+        </div>
+
+        <div>
+          <label>Décalage prévu fin (HHMM)</label>
+          <input id="decalagePrevFin" inputmode="numeric" placeholder="ex: 1045" maxlength="4" />
+        </div>
+
+        <div>
+          <label>Décalage réalisé début (HHMM)</label>
+          <input id="decalageRealDebut" inputmode="numeric" placeholder="ex: 1020" maxlength="4" />
+        </div>
+
+        <div>
+          <label>Décalage réalisé fin (HHMM)</label>
+          <input id="decalageRealFin" inputmode="numeric" placeholder="ex: 1050" maxlength="4" />
+        </div>
+
+    </div>
+
+      <div class="row" style="margin-top:10px;">
+        <label class="check" style="margin:0; user-select:none;">
+        <input id="decalageNonRealise" type="checkbox" />
+        Décalage non réalisé
+        </label>
+      </div>
+
+  </div>
 
       <div class="hr"></div>
 
