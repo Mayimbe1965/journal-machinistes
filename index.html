@@ -709,13 +709,17 @@
     const header = [
       "date_fin_service","ligne","service","coquille","police","flag_621m_619k",
       "debut_hhmm","fin_hhmm","service_2x","debut2_hhmm","fin2_hhmm",
-      "retard","fin_reelle_hhmm","incident","accident","note","cle_antidoublon","timestamp_iso"
+      "retard","fin_reelle_hhmm",
+      "decalage","decalage_prev_debut","decalage_prev_fin","decalage_real_debut","decalage_real_fin","decalage_non_realise",
+      "incident","accident","note","cle_antidoublon","timestamp_iso"
     ];
     const esc = (v) => '"' + String(v ?? "").replaceAll('"','""') + '"';
     const rows = items.map(x => [
       x.dateFin, x.ligne, x.service, x.coquille, x.police, x.flag,
       x.debut, x.fin, x.service2x, x.debut2, x.fin2,
-      x.retard, x.finReelle, x.incident, x.accident,
+      x.retard, x.finReelle, x.decalage, x.decalagePrevDebut,
+      x.decalagePrevFin, x.decalageRealDebut, x.decalageRealFin,
+      x.decalageNonRealise, x.incident, x.accident,
       (x.note||"").replace(/\r?\n/g,"\\n"),
       x.key, x.ts
     ].map(esc).join(","));
