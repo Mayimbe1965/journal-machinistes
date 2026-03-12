@@ -669,7 +669,14 @@
 
         $("incident").checked = !!item.incident;
         $("accident").checked = !!item.accident;
+        $("decalage").checked = !!item.decalage;
+        $("decalagePrevDebut").value = item.decalagePrevDebut || "";
+        $("decalagePrevFin").value = item.decalagePrevFin || "";
+        $("decalageRealDebut").value = item.decalageRealDebut || "";
+        $("decalageRealFin").value = item.decalageRealFin || "";
+        $("decalageNonRealise").checked = !!item.decalageNonRealise;
         refreshFlagVisibility();
+        refreshDecalageVisibility();
         $("flag").value = item.flag || "";
         $("note").value = item.note || "";
 
