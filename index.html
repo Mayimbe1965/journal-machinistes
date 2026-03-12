@@ -438,6 +438,12 @@
       finReelle: cleanHHMM($("finReelle").value),
       incident: $("incident").checked ? 1 : 0,
       accident: $("accident").checked ? 1 : 0,
+      decalage: $("decalage").checked ? 1 : 0,
+      decalagePrevDebut: cleanHHMM($("decalagePrevDebut").value),
+      decalagePrevFin: cleanHHMM($("decalagePrevFin").value),
+      decalageRealDebut: cleanHHMM($("decalageRealDebut").value),
+      decalageRealFin: cleanHHMM($("decalageRealFin").value),
+      decalageNonRealise: $("decalageNonRealise").checked ? 1 : 0,
       note: ($("note").value || "").trim(),
       ts: new Date().toISOString(),
     };
