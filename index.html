@@ -491,10 +491,15 @@
     $("finReelle").value = "";
     $("incident").checked = false;
     $("accident").checked = false;
+    $("decalagePrevDebut").value = "";
+    $("decalagePrevFin").value = "";
+    $("decalageRealDebut").value = "";
+    $("decalageRealFin").value = "";
     $("note").value = "";
     ["err_dateFin","err_ligne","err_service","err_coquille","err_police"].forEach(id=>setError(id,false));
     ["debut","fin","debut2","fin2","finReelle"].forEach(id=>$(id).style.borderColor="var(--border)");
     refreshFlagVisibility();
+    refreshDecalageVisibility();
   }
 
   function refreshFlagVisibility() {
