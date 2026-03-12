@@ -526,6 +526,10 @@
     $("fin").value = "";
     $("service2x").checked = false;
     $("retard").checked = false;
+    $("retardPart1").checked = false;
+    $("retardPart2").checked = false;
+    $("finReelle1").value = "";
+    $("finReelle2").value = "";
     $("debut2").value = "";
     $("fin2").value = "";
     $("finReelle").value = "";
@@ -555,11 +559,40 @@
   }
   
   function refreshRetardVisibility() {
-    const show = $("retard").checked;
-    $("retardWrap").classList.toggle("hidden", !show);
+    const showRetard = $("retard").checked;
+    const show2x = $("service2x").checked;
   
-    if (!show) {
-      $("finReelle").value = "";
+    $("retardWrap").classList.toggle("hidden", !showRetard);
+  
+    // Si on enlève complètement le retard, on remet tout à zéro
+    if (!showRetard) {
+      $("retardPart1").checked = false;
+      $("retardPart2").checked = false;
+      $("finReelle1").value = "";
+      $("finReelle2").value = "";
+    }
+  
+    // La 2e partie n'existe que si service 2x
+    $("retardPart2CheckWrap").classList.toggle("hidden", !(showRetard && show2x));
+  
+    // Si on n'est pas en 2x, on purge la partie 2
+    if (!show2x) {
+      $("retardPart2").checked = false;
+      $("finReelle2").value = "";
+    }
+  
+    // Affichage fin réelle partie 1
+    $("retardPart1Wrap").classList.toggle("hidden", !(showRetard && $("retardPart1").checked));
+  
+    if (!($("retardPart1").checked)) {
+      $("finReelle1").value = "";
+    }
+  
+    // Affichage fin réelle partie 2
+    $("retardPart2Wrap").classList.toggle("hidden", !(showRetard && show2x && $("retardPart2").checked));
+  
+    if (!(show2x && $("retardPart2").checked)) {
+      $("finReelle2").value = "";
     }
   }
   
@@ -852,6 +885,10 @@
   
   $("retard").addEventListener("change", refreshRetardVisibility);
 
+  $("retardPart1").addEventListener("change", refreshRetardVisibility);
+  
+  $("retardPart2").addEventListener("change", refreshRetardVisibility);
+  
   $("decalage").addEventListener("change", refreshDecalageVisibility);
   
   $("decalageNonRealise").addEventListener("change", refreshDecalageVisibility);
