@@ -156,15 +156,48 @@
       </div>
       
       <div id="retardWrap" class="hidden" style="margin-top:10px;">
-        <div class="grid2">
-          <div>
-            <label>Fin réelle (HHMM) <span class="hint">(si retard)</span></label>
-            <input id="finReelle" inputmode="numeric" placeholder="ex: 1410" maxlength="4" />
-          </div>
-          <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
-            Astuce : si tu ne sais pas l’heure exacte, laisse vide. L’outil reste utile.
+      
+        <div class="sub">
+          <span><b>Retard</b></span>
+          <span class="badge">Exploitation</span>
+        </div>
+      
+        <div class="row" style="margin-top:10px;">
+          <label class="check" style="margin:0; user-select:none;">
+            <input id="retardPart1" type="checkbox" />
+            Retard 1re partie
+          </label>
+      
+          <label id="retardPart2CheckWrap" class="check hidden" style="margin:0; user-select:none;">
+            <input id="retardPart2" type="checkbox" />
+            Retard 2e partie
+          </label>
+        </div>
+      
+        <div id="retardPart1Wrap" class="hidden" style="margin-top:10px;">
+          <div class="grid2">
+            <div>
+              <label>Fin réelle 1re partie (HHMM)</label>
+              <input id="finReelle1" inputmode="numeric" placeholder="ex: 1410" maxlength="4" />
+            </div>
+            <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
+              Partie 1 : renseigne l’heure réelle de fin si un retard a effectivement eu lieu.
+            </div>
           </div>
         </div>
+      
+        <div id="retardPart2Wrap" class="hidden" style="margin-top:10px;">
+          <div class="grid2">
+            <div>
+              <label>Fin réelle 2e partie (HHMM)</label>
+              <input id="finReelle2" inputmode="numeric" placeholder="ex: 2215" maxlength="4" />
+            </div>
+            <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
+              Partie 2 : renseigne l’heure réelle de fin si la seconde vacation a fini en retard.
+            </div>
+          </div>
+        </div>
+      
       </div>
 
       <div id="decalageWrap" class="hidden" style="margin-top:10px;">
