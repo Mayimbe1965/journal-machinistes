@@ -611,6 +611,19 @@
       if (item.service2x) tags.push("2×");
       const tagHtml = tags.length ? ` · <span class="badge">${tags.join(" · ")}</span>` : "";
 
+      let decalageTxt = "";
+
+      if (item.decalage) {
+        if (item.decalageNonRealise) {
+          decalageTxt = "Décalage non réalisé";
+        } else if (item.decalageRealDebut || item.decalageRealFin) {
+          decalageTxt = ` · Décalage: <b>${item.decalageRealDebut || "?"}-${item.decalageRealFin || "?"}</b>`;
+        } else if (item.decalagePrevDebut || item.decalagePrevFin) {
+          decalageTxt = ` · Décalage prévu: <b>${item.decalagePrevDebut || "?"}-${item.decalagePrevFin || "?"}</b>`;
+        } else {
+          decalageTxt = " · Décalage";
+        }
+      }
       const hours = (item.debut && item.fin) ? `${item.debut}-${item.fin}` : "";
       const hours2 = (item.service2x && item.debut2 && item.fin2) ? ` / ${item.debut2}-${item.fin2}` : "";
       const finReelle = (item.retard && item.finReelle) ? ` · fin réelle: ${item.finReelle}` : "";
@@ -624,7 +637,7 @@
             <div>
               <b>${formatDateFR(item.dateFin)} — L${item.ligne} / S${item.service}</b>${tagHtml}
               <div class="hint">Coquille: <b>${item.coquille}</b> · Police: <b>${item.police}</b>${flag!=="" ? ` · 621M–619K: <b>${flag}</b>` : ""}</div>
-              <div class="hint">${hours ? `Horaires: <b>${hours + hours2}</b>${finReelle}` : "Horaires: —"}</div>
+              <div class="hint">Horaires: <b>${hours ? hours + hours2 : "—"}</b>${finReelle}${decalageTxt}</div>
             </div>
             <div class="right">
               <button class="ghost mini" data-edit="${item.key}">Éditer</button>
@@ -781,6 +794,7 @@
     const r = upsert(item);
     save();
     renderList();
+    resetForm();
     alert(r.mode==="insert" ? "Enregistré." : "Mis à jour (anti-doublon).");
   });
 
