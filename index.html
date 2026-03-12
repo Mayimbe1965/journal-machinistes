@@ -142,21 +142,28 @@
         </label>
       </div>
 
-      <div class="grid2" style="margin-top:10px;">
-        <div>
-          <label>Début 2 (HHMM) <span class="hint">(si 2×)</span></label>
-          <input id="debut2" inputmode="numeric" placeholder="ex: 1530" maxlength="4" />
+      <div id="service2xWrap" class="hidden" style="margin-top:10px;">
+        <div class="grid2">
+          <div>
+            <label>Début 2 (HHMM) <span class="hint">(si 2×)</span></label>
+            <input id="debut2" inputmode="numeric" placeholder="ex: 1530" maxlength="4" />
+          </div>
+          <div>
+            <label>Fin 2 (HHMM) <span class="hint">(si 2×)</span></label>
+            <input id="fin2" inputmode="numeric" placeholder="ex: 2150" maxlength="4" />
+          </div>
         </div>
-        <div>
-          <label>Fin 2 (HHMM) <span class="hint">(si 2×)</span></label>
-          <input id="fin2" inputmode="numeric" placeholder="ex: 2150" maxlength="4" />
-        </div>
-        <div>
-          <label>Fin réelle (HHMM) <span class="hint">(si retard)</span></label>
-          <input id="finReelle" inputmode="numeric" placeholder="ex: 1410" maxlength="4" />
-        </div>
-        <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
-          Astuce : si tu ne sais pas l’heure exacte, laisse vide. L’outil reste utile.
+      </div>
+      
+      <div id="retardWrap" class="hidden" style="margin-top:10px;">
+        <div class="grid2">
+          <div>
+            <label>Fin réelle (HHMM) <span class="hint">(si retard)</span></label>
+            <input id="finReelle" inputmode="numeric" placeholder="ex: 1410" maxlength="4" />
+          </div>
+          <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
+            Astuce : si tu ne sais pas l’heure exacte, laisse vide. L’outil reste utile.
+          </div>
         </div>
       </div>
 
@@ -500,8 +507,29 @@
     ["debut","fin","debut2","fin2","finReelle"].forEach(id=>$(id).style.borderColor="var(--border)");
     refreshFlagVisibility();
     refreshDecalageVisibility();
+    refreshService2xVisibility();
+    refreshRetardVisibility();
   }
 
+  function refreshService2xVisibility() {
+    const show = $("service2x").checked;
+    $("service2xWrap").classList.toggle("hidden", !show);
+  
+    if (!show) {
+      $("debut2").value = "";
+      $("fin2").value = "";
+    }
+  }
+  
+  function refreshRetardVisibility() {
+    const show = $("retard").checked;
+    $("retardWrap").classList.toggle("hidden", !show);
+  
+    if (!show) {
+      $("finReelle").value = "";
+    }
+  }
+  
   function refreshFlagVisibility() {
     const show = $("incident").checked || $("accident").checked;
     $("flagWrap").classList.toggle("hidden", !show);
@@ -787,6 +815,10 @@
 
   ["incident","accident"].forEach(id => $(id).addEventListener("change", refreshFlagVisibility));
 
+  $("service2x").addEventListener("change", refreshService2xVisibility);
+  
+  $("retard").addEventListener("change", refreshRetardVisibility);
+
   $("decalage").addEventListener("change", refreshDecalageVisibility);
   
   $("decalageNonRealise").addEventListener("change", refreshDecalageVisibility);
@@ -942,6 +974,8 @@ $("btnExportWeek").addEventListener("click", () => {
   fillLineSelect();
   resetForm();
   refreshDecalageVisibility();
+  refreshService2xVisibility();
+  refreshRetardVisibility();
   renderList();
 })();
 </script>
