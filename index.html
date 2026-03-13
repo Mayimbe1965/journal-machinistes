@@ -424,7 +424,29 @@
   }
   function normalizeLine(v) { return String(v||"").trim().toUpperCase(); }
   function normalizeService(v) { return String(v||"").trim(); }
+  }
+  function normalizeHHMMInputValue(raw) {
+    const digits = String(raw || "").replace(/\D/g, "");
 
+    if (!digits) return "";
+
+    if (digits.length <= 2) return digits;
+    if (digits.length === 3) return "0" + digits;
+    return digits.slice(0, 4);
+  }
+  function enhanceHHMMField(id) {
+    const el = $(id);
+    if (!el) return;
+
+    el.addEventListener("input", () => {
+      el.value = normalizeHHMMInputValue(el.value);
+    });
+
+    el.addEventListener("blur", () => {
+      el.value = normalizeHHMMInputValue(el.value);
+    });
+  }
+  
   function load() {
     try {
       // v3.2 : nouvelle clé de stockage (pour évolution sans casser l'ancien)
@@ -1103,6 +1125,18 @@ $("btnExportWeek").addEventListener("click", () => {
   refreshDecalageVisibility();
   refreshService2xVisibility();
   refreshRetardVisibility();
+  [
+    "debut",
+    "fin",
+    "debut2",
+    "fin2",
+    "finReelle1",
+    "finReelle2",
+    "decalagePrevDebut",
+    "decalagePrevFin",
+    "decalageRealDebut",
+    "decalageRealFin"
+  ].forEach(enhanceHHMMField);
   renderList();
 })();
 </script>
