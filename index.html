@@ -525,30 +525,62 @@
     $("coquille").value = "";
     $("police").value = "";
     $("flag").value = "";
+    
     $("debut").value = "";
     $("fin").value = "";
+    
     $("service2x").checked = false;
+    $("debut2").value = "";
+    $("fin2").value = "";
+    
     $("retard").checked = false;
     $("retardPart1").checked = false;
     $("retardPart2").checked = false;
     $("finReelle1").value = "";
     $("finReelle2").value = "";
-    $("debut2").value = "";
-    $("fin2").value = "";
-    $("finReelle").value = "";
-    $("incident").checked = false;
-    $("accident").checked = false;
+    
+    $("decalage").checked = false;
     $("decalagePrevDebut").value = "";
     $("decalagePrevFin").value = "";
     $("decalageRealDebut").value = "";
     $("decalageRealFin").value = "";
+    $("decalageNonRealise").checked = false;
+    
+    $("incident").checked = false;
+    $("accident").checked = false;
     $("note").value = "";
-    ["err_dateFin","err_ligne","err_service","err_coquille","err_police"].forEach(id=>setError(id,false));
-    ["debut","fin","debut2","fin2","finReelle"].forEach(id=>$(id).style.borderColor="var(--border)");
+    
+    ["err_dateFin", "err_ligne", "err_service", "err_coquille", "err_police"]
+        .forEach(id => setError(id, false));
+    
+    [
+      "debut",
+      "fin",
+      "debut2",
+      "fin2",
+      "finReelle1",
+      "finReelle2",
+      "decalagePrevDebut",
+      "decalagePrevFin",
+      "decalageRealDebut",
+      "decalageRealFin"
+    ].forEach(id => {
+      const el = $(id);
+      if (el) el.style.borderColor = "var(--border)";
+    });
+    
     refreshFlagVisibility();
     refreshDecalageVisibility();
     refreshService2xVisibility();
     refreshRetardVisibility();
+    
+    setTimeout(() => {
+      $("incident").checked = false;
+      $("accident").checked = false;
+      $("flag").value = "";
+      $("note").value = "";
+      refreshFlagVisibility();
+    }, 0);
   }
 
   function refreshService2xVisibility() {
