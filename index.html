@@ -473,9 +473,12 @@
       fin: cleanHHMM($("fin").value),
       service2x: $("service2x").checked ? 1 : 0,
       retard: $("retard").checked ? 1 : 0,
+      retardPart1: $("retardPart1").checked ? 1 : 0,
+      retardPart2: $("retardPart2").checked ? 1 : 0,
+      finReelle1: cleanHHMM($("finReelle1").value),
+      finReelle2: cleanHHMM($("finReelle2").value),
       debut2: cleanHHMM($("debut2").value),
       fin2: cleanHHMM($("fin2").value),
-      finReelle: cleanHHMM($("finReelle").value),
       incident: $("incident").checked ? 1 : 0,
       accident: $("accident").checked ? 1 : 0,
       decalage: $("decalage").checked ? 1 : 0,
@@ -770,7 +773,12 @@
         $("fin").value = item.fin || "";
         $("service2x").checked = !!item.service2x;
         $("retard").checked = !!item.retard;
+        $("retardPart1").checked = !!item.retardPart1;
+        $("retardPart2").checked = !!item.retardPart2;
+        $("finReelle1").value = item.finReelle1 || "";
+        $("finReelle2").value = item.finReelle2 || "";
         $("debut2").value = item.debut2 || "";
+        
         $("fin2").value = item.fin2 || "";
         $("finReelle").value = item.finReelle || "";
 
@@ -784,6 +792,8 @@
         $("decalageNonRealise").checked = !!item.decalageNonRealise;
         refreshFlagVisibility();
         refreshDecalageVisibility();
+        refreshService2xVisibility();
+        refreshRetardVisibility();
         $("flag").value = item.flag || "";
         $("note").value = item.note || "";
 
