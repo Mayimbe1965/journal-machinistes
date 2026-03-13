@@ -302,7 +302,6 @@
       <div class="btnrow">
         <button class="secondary" id="btnJsonExport">Exporter JSON</button>
         <button class="ghost" id="btnJsonImport">Importer JSON</button>
-        <input type="file" id="jsonFileInput" accept=".json" style="display:none">
       </div>
 
       <div class="smallnote" style="margin-top:10px;">
@@ -1045,63 +1044,7 @@
 
   $("btnKey").addEventListener("click", () => {
     alert("Clé anti-doublon :\n- Avec horaires: date + ligne + service + début + fin\n- Sans horaires: date + ligne + service + coquille + police");
-  });
-
-    // EXPORT JSON
-  document.getElementById("btnJsonExport").addEventListener("click", () => {
-  
-      const data = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-  
-      const blob = new Blob([JSON.stringify(data, null, 2)], {
-          type: "application/json"
-      });
-  
-      const url = URL.createObjectURL(blob);
-  
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "journal-machiniste-backup.json";
-      a.click();
-  
-      URL.revokeObjectURL(url);
-
-  });
-
-  // IMPORT JSON
-  document.getElementById("btnJsonImport").addEventListener("click", () => {
-      document.getElementById("jsonFileInput").click();
-  });
-  
-  document.getElementById("jsonFileInput").addEventListener("change", function(event){
-  
-      const file = event.target.files[0];
-  
-      if(!file) return;
-  
-      const reader = new FileReader();
-  
-      reader.onload = function(e){
-  
-          try{
-  
-              const data = JSON.parse(e.target.result);
-  
-              localStorage.setItem(LS_KEY, JSON.stringify(data));
-  
-              alert("Import réussi !");
-              location.reload();
-  
-          }catch(err){
-  
-              alert("Fichier JSON invalide");
-  
-          }
-  
-      };
-
-    reader.readAsText(file);
-
-});
+ });
 
   $("btnPrintWeek").addEventListener("click", () => {
   const baseDate = $("searchDate").value || todayISO();
