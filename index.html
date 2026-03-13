@@ -432,6 +432,27 @@
     if (digits.length === 3) return "0" + digits;
     return digits.slice(0, 4);
   }
+  function normalizeHHMMInputValue(raw) {
+    const digits = String(raw || "").replace(/\D/g, "");
+
+    if (!digits) return "";
+    if (digits.length <= 2) return digits;
+    if (digits.length === 3) return "0" + digits;
+    return digits.slice(0, 4);
+  }
+
+  function enhanceHHMMField(id) {
+    const el = $(id);
+    if (!el) return;
+
+    el.addEventListener("input", () => {
+      el.value = normalizeHHMMInputValue(el.value);
+    });
+
+    el.addEventListener("blur", () => {
+      el.value = normalizeHHMMInputValue(el.value);
+    });
+  }
   function enhanceHHMMField(id) {
     const el = $(id);
     if (!el) return;
