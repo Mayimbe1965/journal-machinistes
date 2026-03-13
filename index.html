@@ -507,12 +507,12 @@
       setError(errId, missing);
       if (missing) ok = false;
     }
-    const hhFields = ["debut","fin","debut2","fin2","finReelle"];
+    const hhFields = ["debut","fin","debut2","fin2","finReelle1","finReelle2","decalagePrevDebut","decalagePrevFin","decalageRealDebut","decalageRealFin"];
     for (const f of hhFields) {
       const el = $(f);
       const v = item[f];
       const good = isValidHHMM(v);
-      el.style.borderColor = good ? "var(--border)" : "var(--danger)";
+      if (el) el.style.borderColor = good ? "var(--border)" : "var(--danger)";
       if (!good) ok = false;
     }
     return ok;
