@@ -908,8 +908,8 @@
     if (!ok) { alert("Vérifie les champs obligatoires et le format HHMM (4 chiffres)."); return; }
     const r = upsert(item);
     save();
-    renderList();
     resetForm();
+    renderList();
     alert(r.mode==="insert" ? "Enregistré." : "Mis à jour (anti-doublon).");
   });
 
