@@ -53,6 +53,23 @@
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
     .hidden{display:none;}
     .smallnote{font-size:11px; color:var(--muted); line-height:1.35;}
+
+    
+    .grid3compact {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    
+    @media (max-width: 720px) {
+      .grid3compact {
+        grid-template-columns: 1fr 1fr;
+      }
+    
+      .grid3compact > div:last-child {
+        grid-column: span 2;
+      }
+    }
   </style>
 </head>
 <body>
@@ -91,23 +108,22 @@
           <div class="hint">Astuce: coche <b>Noctilien</b> pour réduire la liste aux lignes N.</div>
         </div>
 
-        <div>
-          <label>Service <span class="req">*</span></label>
-          <input id="service" inputmode="numeric" placeholder="ex: 80, 702..." />
-          <div class="err" id="err_service">Champ obligatoire.</div>
+        <div class="grid3compact" style="margin-top:10px;">
+          <div>
+            <label>Service <span class="req">*</span></label>
+            <input id="service" inputmode="numeric" placeholder="ex: 80" maxlength="5" />
+          </div>
+        
+          <div>
+            <label>Coquille <span class="req">*</span></label>
+            <input id="coquille" inputmode="numeric" placeholder="ex: 4449" maxlength="5" />
+          </div>
+        
+          <div>
+            <label>Police <span class="req">*</span></label>
+            <input id="police" inputmode="numeric" placeholder="ex: 12345" maxlength="5" />
+          </div>
         </div>
-        <div>
-          <label>Coquille <span class="req">*</span></label>
-          <input id="coquille" inputmode="numeric" placeholder="ex: 4449" />
-          <div class="err" id="err_coquille">Champ obligatoire.</div>
-        </div>
-
-        <div>
-          <label>Police <span class="req">*</span></label>
-          <input id="police" inputmode="numeric" placeholder="ex: 12345" />
-          <div class="err" id="err_police">Champ obligatoire.</div>
-        </div>
-</div>
 
       <div class="hr"></div>
 
