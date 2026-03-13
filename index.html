@@ -424,7 +424,6 @@
   }
   function normalizeLine(v) { return String(v||"").trim().toUpperCase(); }
   function normalizeService(v) { return String(v||"").trim(); }
-  }
   function normalizeHHMMInputValue(raw) {
     const digits = String(raw || "").replace(/\D/g, "");
 
@@ -733,7 +732,7 @@
     if (st) {
       const blob = [
         item.dateFin, item.ligne, item.service, item.coquille, item.police,
-        item.debut, item.fin, item.debut2, item.fin2, item.finReelle,
+        item.debut, item.fin, item.debut2, item.fin2, item.finReelle1, item.finReelle2,
         item.flag, item.note, item.incident, item.accident, item.retard
       ].join(" ").toLowerCase();
       ok = ok && blob.includes(st);
@@ -793,7 +792,12 @@
       }
       const hours = (item.debut && item.fin) ? `${item.debut}-${item.fin}` : "";
       const hours2 = (item.service2x && item.debut2 && item.fin2) ? ` / ${item.debut2}-${item.fin2}` : "";
-      const finReelle = (item.retard && item.finReelle) ? ` · fin réelle: ${item.finReelle}` : "";
+      const finReelle =
+        item.retardPart1 && item.finReelle1
+          ? ` · fin réelle 1: ${item.finReelle1}`
+          : item.retardPart2 && item.finReelle2
+          ? ` · fin réelle 2: ${item.finReelle2}`
+          : "";
 
       const note = item.note ? item.note : "";
       const flag = (item.flag !== "" && item.flag !== null && item.flag !== undefined) ? item.flag : "";
@@ -882,7 +886,7 @@
     const header = [
       "date_fin_service","ligne","service","coquille","police","flag_621m_619k",
       "debut_hhmm","fin_hhmm","service_2x","debut2_hhmm","fin2_hhmm",
-      "retard","fin_reelle_hhmm",
+      "retard","retard_part1","retard_part2","fin_reelle1_hhmm","fin_reelle2_hhmm",
       "decalage","decalage_prev_debut","decalage_prev_fin","decalage_real_debut","decalage_real_fin","decalage_non_realise",
       "incident","accident","note","cle_antidoublon","timestamp_iso"
     ];
@@ -890,7 +894,8 @@
     const rows = items.map(x => [
       x.dateFin, x.ligne, x.service, x.coquille, x.police, x.flag,
       x.debut, x.fin, x.service2x, x.debut2, x.fin2,
-      x.retard, x.finReelle, x.decalage, x.decalagePrevDebut,
+      x.retard, x.retardPart1, x.retardPart2, x.finReelle1, x.finReelle2,
+      x.decalage, x.decalagePrevDebut,
       x.decalagePrevFin, x.decalageRealDebut, x.decalageRealFin,
       x.decalageNonRealise, x.incident, x.accident,
       (x.note||"").replace(/\r?\n/g,"\\n"),
