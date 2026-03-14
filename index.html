@@ -408,6 +408,8 @@
   const LINES_ALL = ["20","26","29","38","39","40","46","48","56","57","60","69","76","77","80","86","87","96","102","109","115","121","122","129","202","215","245","318","322","341","N01","N02","N13","N41","N42","N43","N44","N45","N51","N52","N53"];
   const LS_KEY = "journal_machiniste_pro_v32";
 
+  const LAST_CTX_KEY = "journal_machiniste_last_ctx_v1";
+
   const $ = (id) => document.getElementById(id);
   const state = { items: [], lastKeyExplain: "" };
 
@@ -774,6 +776,33 @@
     box.innerHTML = `<span class="ok"><b>Service trouvé</b> pour ${formatDateFR(sd)} : ligne <b>${match.ligne}</b>, service <b>${match.service}</b>, coquille <b>${match.coquille}</b>, police <b>${match.police}</b>.</span>`;
   }
 
+  function saveLastContext() {
+    const ctx = {
+      ligne: $("ligne")?.value || "",
+      onlyNoct: $("onlyNoct")?.checked ? 1 : 0,
+      coquille: $("coquille")?.value || "",
+      police: $("police")?.value || ""
+    };
+    localStorage.setItem(LAST_CTX_KEY, JSON.stringify(ctx));
+  }
+  
+  function loadLastContext() {
+    try {
+      const raw = localStorage.getItem(LAST_CTX_KEY);
+      if (!raw) return;
+      const ctx = JSON.parse(raw);
+  
+      if (ctx.ligne) $("ligne").value = ctx.ligne;
+      if (ctx.coquille) $("coquille").value = ctx.coquille;
+      if (ctx.police) $("police").value = ctx.police;
+      if ("onlyNoct" in ctx) $("onlyNoct").checked = !!ctx.onlyNoct;
+  
+      fillLineSelect();
+    } catch (e) {
+      // silence volontaire
+    }
+  }
+
   function renderList() {
     renderCount();
     renderSearchByDateMessage();
@@ -1003,6 +1032,7 @@
     const ok = validate(item);
     if (!ok) { alert("Vérifie les champs obligatoires et le format HHMM (4 chiffres)."); return; }
     const r = upsert(item);
+    saveLastContext();
     save();
     resetForm();
     renderList();
