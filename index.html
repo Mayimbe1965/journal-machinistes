@@ -426,26 +426,25 @@
   }
   function normalizeLine(v) { return String(v||"").trim().toUpperCase(); }
   function normalizeService(v) { return String(v||"").trim(); }
-  function normalizeHHMMInputValue(raw) {
-    const digits = String(raw || "").replace(/\D/g, "");
-
+  function normalizeHHMMInputValue(raw, padLeft = false) {
+    const digits = String(raw || "").replace(/\D/g, "").slice(0, 4);
+  
     if (!digits) return "";
-
-    if (digits.length <= 2) return digits;
-    if (digits.length === 3) return "0" + digits;
-    return digits.slice(0, 4);
+    if (padLeft && digits.length === 3) return "0" + digits;
+  
+    return digits;
   }
 
   function enhanceHHMMField(id) {
     const el = $(id);
     if (!el) return;
-
+  
     el.addEventListener("input", () => {
-      el.value = normalizeHHMMInputValue(el.value);
+      el.value = normalizeHHMMInputValue(el.value, false);
     });
-
+  
     el.addEventListener("blur", () => {
-      el.value = normalizeHHMMInputValue(el.value);
+      el.value = normalizeHHMMInputValue(el.value, true);
     });
   }
   
