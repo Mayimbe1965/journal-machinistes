@@ -112,16 +112,19 @@
           <div>
             <label>Service <span class="req">*</span></label>
             <input id="service" inputmode="numeric" placeholder="ex: 80" maxlength="5" />
+            <div class="err" id="err_service">Champ obligatoire.</div>
           </div>
         
           <div>
             <label>Coquille <span class="req">*</span></label>
             <input id="coquille" inputmode="numeric" placeholder="ex: 4449" maxlength="5" />
+            <div class="err" id="err_coquille">Champ obligatoire.</div>
           </div>
         
           <div>
             <label>Police <span class="req">*</span></label>
             <input id="police" inputmode="numeric" placeholder="ex: 12345" maxlength="5" />
+            <div class="err" id="err_police">Champ obligatoire.</div>
           </div>
         </div>
 
@@ -432,27 +435,7 @@
     if (digits.length === 3) return "0" + digits;
     return digits.slice(0, 4);
   }
-  function normalizeHHMMInputValue(raw) {
-    const digits = String(raw || "").replace(/\D/g, "");
 
-    if (!digits) return "";
-    if (digits.length <= 2) return digits;
-    if (digits.length === 3) return "0" + digits;
-    return digits.slice(0, 4);
-  }
-
-  function enhanceHHMMField(id) {
-    const el = $(id);
-    if (!el) return;
-
-    el.addEventListener("input", () => {
-      el.value = normalizeHHMMInputValue(el.value);
-    });
-
-    el.addEventListener("blur", () => {
-      el.value = normalizeHHMMInputValue(el.value);
-    });
-  }
   function enhanceHHMMField(id) {
     const el = $(id);
     if (!el) return;
@@ -506,7 +489,12 @@
   function renderCount() {
     $("countBadge").textContent = `${state.items.length} enregistrement${state.items.length>1?"s":""}`;
   }
-  function setError(id, show) { $(id).style.display = show ? "block" : "none"; }
+  
+  function setError(id, show) {
+    const el = $(id);
+    if (!el) return;
+    el.style.display = show ? "block" : "none";
+  }
 
   function fillLineSelect() {
     const noct = $("onlyNoct").checked;
