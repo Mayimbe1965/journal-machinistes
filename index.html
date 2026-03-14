@@ -447,6 +447,20 @@
       el.value = normalizeHHMMInputValue(el.value, true);
     });
   }
+
+  function linkHHMMFields(fromId, toId) {
+    const from = $(fromId);
+    const to = $(toId);
+    if (!from || !to) return;
+  
+    from.addEventListener("input", () => {
+      const digits = String(from.value || "").replace(/\D/g, "");
+      if (digits.length >= 4) {
+        to.focus();
+        to.select?.();
+      }
+    });
+  }
   
   function load() {
     try {
@@ -1093,6 +1107,10 @@ $("btnExportWeek").addEventListener("click", () => {
     "decalageRealDebut",
     "decalageRealFin"
   ].forEach(enhanceHHMMField);
+  linkHHMMFields("debut", "fin");
+  linkHHMMFields("debut2", "fin2");
+  linkHHMMFields("decalagePrevDebut", "decalagePrevFin");
+  linkHHMMFields("decalageRealDebut", "decalageRealFin");
   renderList();
 })();
 </script>
