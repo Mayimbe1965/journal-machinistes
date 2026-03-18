@@ -83,16 +83,17 @@
 
     <div class="card" id="cardForm">
       <div class="sub">
-        <span><b>1) Identification (obligatoire)</b></span>
-        <span class="badge">Opposable / vérifiable</span>
+        <span><b>Service</b></span>
+        <span class="badge">Obligatoire</span>
       </div>
-
+    
       <div class="grid2">
         <div>
           <label>Date fin service <span class="req">*</span></label>
           <input id="dateFin" type="date" />
           <div class="err" id="err_dateFin">Champ obligatoire.</div>
         </div>
+    
         <div>
           <label>Ligne <span class="req">*</span></label>
           <div class="row" style="gap:8px; align-items:flex-end;">
@@ -105,34 +106,46 @@
             </label>
           </div>
           <div class="err" id="err_ligne">Champ obligatoire.</div>
-          <div class="hint">Astuce: coche <b>Noctilien</b> pour réduire la liste aux lignes N.</div>
         </div>
-
-        <div class="grid3compact" style="margin-top:10px;">
-          <div>
-            <label>Service <span class="req">*</span></label>
-            <input id="service" inputmode="numeric" placeholder="ex: 80" maxlength="5" />
-            <div class="err" id="err_service">Champ obligatoire.</div>
-          </div>
-        
-          <div>
-            <label>Coquille <span class="req">*</span></label>
-            <input id="coquille" inputmode="numeric" placeholder="ex: 4449" maxlength="5" />
-            <div class="err" id="err_coquille">Champ obligatoire.</div>
-          </div>
-        
-          <div>
-            <label>Police <span class="req">*</span></label>
-            <input id="police" inputmode="numeric" placeholder="ex: 12345" maxlength="5" />
-            <div class="err" id="err_police">Champ obligatoire.</div>
-          </div>
+      </div>
+    
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Service <span class="req">*</span></label>
+          <input id="service" inputmode="numeric" maxlength="5" />
+          <div class="err" id="err_service">Champ obligatoire.</div>
         </div>
-
+    
+        <div>
+          <label>Coquille <span class="req">*</span></label>
+          <input id="coquille" inputmode="numeric" maxlength="5" />
+          <div class="err" id="err_coquille">Champ obligatoire.</div>
+        </div>
+      </div>
+    
+      <div style="margin-top:10px;">
+        <label>Police <span class="req">*</span></label>
+        <input id="police" inputmode="numeric" maxlength="5" />
+        <div class="err" id="err_police">Champ obligatoire.</div>
+      </div>
+    
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Début (HHMM)</label>
+          <input id="debut" inputmode="numeric" maxlength="4" />
+        </div>
+    
+        <div>
+          <label>Fin (HHMM)</label>
+          <input id="fin" inputmode="numeric" maxlength="4" />
+        </div>
+      </div>
+    
       <div class="hr"></div>
-
+    
       <div class="sub">
-        <span><b>2) Horaires (recommandé)</b></span>
-        <span class="badge">Non bloquant</span>
+        <span><b>Options</b></span>
+        <span class="badge">Facultatif</span>
       </div>
 
       <div class="grid2">
