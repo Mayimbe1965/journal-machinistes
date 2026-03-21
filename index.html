@@ -74,11 +74,10 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Journal Machiniste — <span class="mono">PRO</span> (local)</h1>
+    <h1>Journal Machiniste</h1>
     <div class="pills">
-      <div class="pill">Version v3.2</div>
-      <div class="pill">Données: stockage local navigateur</div>
-      <div class="pill">Export CSV + sauvegarde JSON</div>
+      <div class="pill">v4</div>
+      <div class="pill">Local + JSON</div>
     </div>
 
     <div class="card" id="cardForm">
@@ -308,10 +307,7 @@
       </div>
 
       <div class="smallnote" style="margin-top:10px;">
-        Champs obligatoires : <b>Date</b>, <b>Ligne</b>, <b>Service</b>, <b>Coquille</b>, <b>Police</b>.
-        <br/>Horaires : recommandés mais non bloquants. Export JSON conseillé (sauvegarde).
-        <br/><span class="mono">Anti-doublon</span> : date + ligne + service + début + fin (si horaires présents).
-        Sinon (horaires absents) : date + ligne + service + coquille + police.
+        Champs obligatoires : Date, Ligne, Service, Coquille, Police.
       </div>
     </div>
 
@@ -385,15 +381,13 @@
       </div>
 
       <div class="btnrow" style="margin-top:10px;">
-        <button class="ghost" id="btnIphone">Conseil iPhone</button>
         <button class="ghost" id="btnKey">Voir clé anti-doublon</button>
       </div>
 
       <input id="jsonFile" type="file" accept="application/json" class="hidden"/>
 
       <div class="smallnote" style="margin-top:10px;">
-        <b>Compatibilité</b> : fonctionne sur Firefox/Chrome/Safari modernes. Les données restent <b>dans le navigateur</b> (localStorage).
-        Sur Android, c’est identique : chaque navigateur a son stockage propre. Pour partager entre appareils, utilise <b>Exporter JSON</b>.
+        Les données restent dans le navigateur. Utilise Exporter JSON pour sauvegarder ou transférer.
       </div>
     </div>
 
