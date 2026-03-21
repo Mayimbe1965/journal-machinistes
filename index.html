@@ -317,38 +317,43 @@
 
     <div class="card">
       <div class="sub">
-        <span><b>Recherche / impression / export</b></span>
+        <span><b>Recherche</b></span>
         <span class="badge" id="countBadge">0 enregistrement</span>
       </div>
 
       <div class="grid2">
         <div>
-          <label>Recherche (date) — affiche le service du jour</label>
+          <label>Date</label>
           <input id="searchDate" type="date" />
-          <div class="hint">Tu saisis juste la date → l’appli affiche les infos si elles existent.</div>
         </div>
         <div>
-          <label>Contient (texte)</label>
+          <label>Texte</label>
           <input id="searchText" placeholder="N15, coquille, note..." />
         </div>
 
         <div>
-          <label>Filtre ligne</label>
+          <label>Ligne</label>
           <input id="filterLine" placeholder="26, N15..." />
         </div>
         <div>
-          <label>Filtre service</label>
+          <label>Service</label>
           <input id="filterService" placeholder="80, 702..." />
         </div>
       </div>
 
+      <div class="hr"></div>
+
+      <div class="sub">
+        <span><b>Impression / export</b></span>
+      </div>
+      
       <div class="grid2" style="margin-top:10px;">
         <div>
-          <label>Impression / export : du</label>
+          <label>Du</label>
           <input id="rangeFrom" type="date" />
         </div>
         <div>
-          <label>au</label>
+          <label>Au</label>
           <input id="rangeTo" type="date" />
         </div>
       </div>
@@ -371,13 +376,12 @@
       <div class="hr"></div>
 
       <div class="sub">
-        <span><b>Sauvegarde / restauration</b></span>
-        <span class="badge">JSON = copie complète</span>
+        <span><b>Sauvegarde</b></span>
       </div>
 
       <div class="btnrow">
-        <button class="secondary" id="btnJsonExport">Exporter JSON (sauvegarde)</button>
-        <button class="ghost" id="btnJsonImport">Importer JSON (restaurer)</button>
+        <button class="secondary" id="btnJsonExport">Exporter JSON</button>
+        <button class="ghost" id="btnJsonImport">Importer JSON</button>
       </div>
 
       <div class="btnrow" style="margin-top:10px;">
