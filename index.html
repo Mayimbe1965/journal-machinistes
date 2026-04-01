@@ -1139,7 +1139,10 @@
     alert(r.mode === "insert" ? "Enregistré." : "Mis à jour (anti-doublon).");
   });
 
-  $("btnReset").addEventListener("click", resetForm);
+  $("btnReset").addEventListener("click", () => {
+    localStorage.removeItem(DRAFT_KEY);
+    resetForm();
+  });
 
   $("btnExportAll").addEventListener("click", () => {
     const csv = toCSV(state.items.slice().reverse());
