@@ -1207,11 +1207,46 @@ $("btnExportWeek").addEventListener("click", () => {
     "text/csv;charset=utf-8"
   );
 });
+
+  [
+    "dateFin",
+    "onlyNoct",
+    "ligne",
+    "service2x",
+    "service",
+    "police",
+    "coquille",
+    "fin",
+    "debut",
+    "retard",
+    "retardPart1",
+    "retardPart2",
+    "finReelle1",
+    "finReelle2",
+    "debut2",
+    "fin2",
+    "decalage",
+    "decalagePrevDebut",
+    "decalagePrevFin",
+    "decalageRealDebut",
+    "decalageRealFin",
+    "decalageNonRealise",
+    "incident",
+    "accident",
+    "flag",
+    "note"
+  ].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener("input", saveDraft);
+    el.addEventListener("change", saveDraft);
+  });
   
   // init
   load();
   fillLineSelect();
   resetForm();
+  loadDraft();
   refreshDecalageVisibility();
   refreshService2xVisibility();
   refreshRetardVisibility();
