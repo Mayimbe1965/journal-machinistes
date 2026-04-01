@@ -407,6 +407,7 @@
   const LS_KEY = "journal_machiniste_pro_v32";
 
   const LAST_CTX_KEY = "journal_machiniste_last_ctx_v1";
+  const DRAFT_KEY = "journal_machiniste_draft_v1";
 
   const $ = (id) => document.getElementById(id);
   const state = { items: [], lastKeyExplain: "" };
@@ -550,6 +551,97 @@
     };
   }
 
+  function saveDraft() {
+    const draft = {
+      dateFin: $("dateFin")?.value || "",
+      onlyNoct: $("onlyNoct")?.checked ? 1 : 0,
+      ligne: $("ligne")?.value || "",
+      service2x: $("service2x")?.checked ? 1 : 0,
+  
+      service: $("service")?.value || "",
+      police: $("police")?.value || "",
+      coquille: $("coquille")?.value || "",
+  
+      fin: $("fin")?.value || "",
+      debut: $("debut")?.value || "",
+  
+      retard: $("retard")?.checked ? 1 : 0,
+      retardPart1: $("retardPart1")?.checked ? 1 : 0,
+      retardPart2: $("retardPart2")?.checked ? 1 : 0,
+      finReelle1: $("finReelle1")?.value || "",
+      finReelle2: $("finReelle2")?.value || "",
+  
+      debut2: $("debut2")?.value || "",
+      fin2: $("fin2")?.value || "",
+  
+      decalage: $("decalage")?.checked ? 1 : 0,
+      decalagePrevDebut: $("decalagePrevDebut")?.value || "",
+      decalagePrevFin: $("decalagePrevFin")?.value || "",
+      decalageRealDebut: $("decalageRealDebut")?.value || "",
+      decalageRealFin: $("decalageRealFin")?.value || "",
+      decalageNonRealise: $("decalageNonRealise")?.checked ? 1 : 0,
+  
+      incident: $("incident")?.checked ? 1 : 0,
+      accident: $("accident")?.checked ? 1 : 0,
+      flag: $("flag")?.value || "",
+      note: $("note")?.value || ""
+    };
+  
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  }
+
+  function loadDraft() {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+  
+      const d = JSON.parse(raw);
+  
+      if ("dateFin" in d) $("dateFin").value = d.dateFin || "";
+      if ("onlyNoct" in d) $("onlyNoct").checked = !!d.onlyNoct;
+      fillLineSelect();
+      if ("ligne" in d) $("ligne").value = d.ligne || "";
+  
+      if ("service2x" in d) $("service2x").checked = !!d.service2x;
+  
+      if ("service" in d) $("service").value = d.service || "";
+      if ("police" in d) $("police").value = d.police || "";
+      if ("coquille" in d) $("coquille").value = d.coquille || "";
+  
+      if ("fin" in d) $("fin").value = d.fin || "";
+      if ("debut" in d) $("debut").value = d.debut || "";
+  
+      if ("retard" in d) $("retard").checked = !!d.retard;
+      if ("retardPart1" in d) $("retardPart1").checked = !!d.retardPart1;
+      if ("retardPart2" in d) $("retardPart2").checked = !!d.retardPart2;
+      if ("finReelle1" in d) $("finReelle1").value = d.finReelle1 || "";
+      if ("finReelle2" in d) $("finReelle2").value = d.finReelle2 || "";
+  
+      if ("debut2" in d) $("debut2").value = d.debut2 || "";
+      if ("fin2" in d) $("fin2").value = d.fin2 || "";
+  
+      if ("decalage" in d) $("decalage").checked = !!d.decalage;
+      if ("decalagePrevDebut" in d) $("decalagePrevDebut").value = d.decalagePrevDebut || "";
+      if ("decalagePrevFin" in d) $("decalagePrevFin").value = d.decalagePrevFin || "";
+      if ("decalageRealDebut" in d) $("decalageRealDebut").value = d.decalageRealDebut || "";
+      if ("decalageRealFin" in d) $("decalageRealFin").value = d.decalageRealFin || "";
+      if ("decalageNonRealise" in d) $("decalageNonRealise").checked = !!d.decalageNonRealise;
+  
+      if ("incident" in d) $("incident").checked = !!d.incident;
+      if ("accident" in d) $("accident").checked = !!d.accident;
+      if ("flag" in d) $("flag").value = d.flag || "";
+      if ("note" in d) $("note").value = d.note || "";
+  
+      refreshService2xVisibility();
+      refreshRetardVisibility();
+      refreshDecalageVisibility();
+      refreshFlagVisibility();
+  
+    } catch (e) {
+      // brouillon corrompu : on ignore
+    }
+  }
+  
   function validate(item) {
     let ok = true;
     const required = [
