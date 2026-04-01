@@ -514,7 +514,9 @@
     const noct = $("onlyNoct").checked;
     const select = $("ligne");
     const current = select.value;
-    const lines = noct ? LINES_ALL.filter(x => x.startsWith("N")) : LINES_ALL;
+    const lines = noct
+      ? LINES_ALL.filter(x => x.startsWith("N"))
+      : LINES_ALL.filter(x => !x.startsWith("N"));
     select.innerHTML = '<option value="">— Choisir —</option>' +
       lines.map(x => `<option value="${x}">${x}</option>`).join("");
     if (lines.includes(current)) select.value = current;
@@ -1180,9 +1182,12 @@
     }
   });
 
-  $("btnIphone").addEventListener("click", () => {
-    alert("iPhone (Safari) : 'Partager' → 'Sur l'écran d'accueil' pour l'ouvrir comme une icône.\n\nLes données sont locales à Safari. Pense à exporter JSON régulièrement.");
+    const btnIphone = $("btnIphone");
+    if (btnIphone) {
+      btnIphone.addEventListener("click", () => {
+        alert("iPhone (Safari) : 'Partager' → 'Sur l'écran d'accueil' pour l'ouvrir comme une icône.\n\nLes données sont locales à Safari. Pense à exporter JSON régulièrement.");
   });
+}
 
   $("btnKey").addEventListener("click", () => {
     alert("Clé anti-doublon :\n- Avec horaires: date + ligne + service + début + fin\n- Sans horaires: date + ligne + service + coquille + police");
