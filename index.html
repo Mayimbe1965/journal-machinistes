@@ -1122,13 +1122,21 @@
   $("btnSave").addEventListener("click", () => {
     const item = getForm();
     const ok = validate(item);
-    if (!ok) { alert("Vérifie les champs obligatoires et le format HHMM (4 chiffres)."); return; }
+    if (!ok) {
+      alert("Vérifie les champs obligatoires et le format HHMM (4 chiffres).");
+      return;
+    }
+  
     const r = upsert(item);
     saveLastContext();
     save();
+  
+    localStorage.removeItem(DRAFT_KEY);
+  
     resetForm();
     renderList();
-    alert(r.mode==="insert" ? "Enregistré." : "Mis à jour (anti-doublon).");
+  
+    alert(r.mode === "insert" ? "Enregistré." : "Mis à jour (anti-doublon).");
   });
 
   $("btnReset").addEventListener("click", resetForm);
