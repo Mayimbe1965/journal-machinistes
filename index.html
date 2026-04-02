@@ -140,13 +140,13 @@
     
       <div class="grid2" style="margin-top:10px;">
         <div>
-          <label>Fin (HHMM)</label>
-          <input id="fin" inputmode="numeric" maxlength="4" />
-        </div>
-      
-        <div>
           <label>Début (HHMM)</label>
           <input id="debut" inputmode="numeric" maxlength="4" />
+        </div>
+        
+        <div>
+          <label>Fin (HHMM)</label>
+          <input id="fin" inputmode="numeric" maxlength="4" />
         </div>
       </div>
     
@@ -1107,7 +1107,10 @@
 
   ["incident","accident"].forEach(id => $(id).addEventListener("change", refreshFlagVisibility));
 
-  $("service2x").addEventListener("change", refreshService2xVisibility);
+  $("service2x").addEventListener("change", () => {
+    refreshService2xVisibility();
+    refreshRetardVisibility();
+  });
   
   $("retard").addEventListener("change", refreshRetardVisibility);
 
