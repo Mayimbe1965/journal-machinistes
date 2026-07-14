@@ -1,1292 +1,194 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Journal Machiniste — PRO (local) v3.2</title>
-  <style>
-    :root{
-      --bg:#f6f7fb; --card:#ffffff; --text:#0f172a; --muted:#64748b;
-      --primary:#2563eb; --danger:#b91c1c; --ok:#16a34a; --border:#e2e8f0;
-      --shadow:0 10px 25px rgba(2,6,23,.08); --radius:18px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:var(--bg); color:var(--text);}
-    .wrap{max-width:560px; margin:22px auto 80px; padding:0 14px;}
-    h1{font-size:22px; margin:8px 0 10px; text-align:center;}
-    .pills{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:0 0 14px;}
-    .pill{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#fff; color:var(--muted);}
-    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
-      padding:14px; margin:12px 0;}
-    .sub{display:flex; justify-content:space-between; gap:8px; align-items:center; margin-top:-2px; margin-bottom:10px; color:var(--muted); font-size:12px;}
-    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-    label{display:block; font-size:12px; color:var(--muted); margin:2px 0 6px;}
-    input, select, textarea{
-      width:100%; padding:12px 12px; border-radius:14px; border:1px solid var(--border);
-      font-size:15px; background:#fff; outline:none;
-    }
-    textarea{min-height:88px; resize:vertical;}
-    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-    .check{display:flex; gap:10px; align-items:center; padding:10px 12px; border:1px solid var(--border); border-radius:14px; background:#fff;}
-    .check input{width:auto; transform:scale(1.1);}
-    .hint{font-size:12px; color:var(--muted);}
-    .req{color:var(--danger); font-weight:600;}
-    .err{color:var(--danger); font-size:12px; margin-top:6px; display:none;}
-    .btnrow{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
-    button{
-      border:0; border-radius:14px; padding:12px 12px; font-size:15px; font-weight:600; cursor:pointer;
-    }
-    .primary{background:var(--primary); color:#fff;}
-    .secondary{background:#eef2ff; color:#1e3a8a; border:1px solid #dbeafe;}
-    .ghost{background:#fff; color:var(--text); border:1px solid var(--border);}
-    .danger{background:var(--danger); color:#fff;}
-    .mini{font-size:12px; padding:8px 10px; border-radius:12px;}
-    .hr{height:1px; background:var(--border); margin:12px 0;}
-    .list{margin-top:10px;}
-    .item{border:1px solid var(--border); border-radius:14px; padding:12px; background:#fff; margin:8px 0;}
-    .item b{font-size:14px;}
-    .badge{display:inline-block; padding:3px 8px; border-radius:999px; border:1px solid var(--border); font-size:12px; color:var(--muted);}
-    .right{text-align:right;}
-    .warn{color:#92400e;}
-    .ok{color:var(--ok);}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
-    .hidden{display:none;}
-    .smallnote{font-size:11px; color:var(--muted); line-height:1.35;}
-
-    
-    .grid3compact {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-    }
-    
-    @media (max-width: 720px) {
-      .grid3compact {
-        grid-template-columns: 1fr 1fr;
-      }
-    
-      .grid3compact > div:last-child {
-        grid-column: span 2;
-      }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b2f53">
+  <meta name="description" content="Journal Machiniste PRO — services, RF, CPMA, RT, TS, incidents et dossiers professionnels, en local.">
+  <title>Journal Machiniste PRO</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wrap">
-    <h1>Journal Machiniste</h1>
-    <div class="pills">
-      <div class="pill">v4</div>
-      <div class="pill">Local + JSON</div>
-    </div>
+  <div id="app" class="app-shell">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <div class="brand">
+        <img src="icon-192.png" alt="" width="42" height="42">
+        <div><strong>Journal Machiniste</strong><span>PRO · v5.0</span></div>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-link active" data-route="dashboard"><span>▦</span>Tableau de bord</button>
+        <button class="nav-link" data-route="journal"><span>▤</span>Journal des services</button>
+        <button class="nav-link" data-route="rf"><span>∑</span>RF / CPMA</button>
+        <button class="nav-link" data-route="imports"><span>⇩</span>Imports et contrôle</button>
+        <button class="nav-link" data-route="incidents"><span>!</span>Incidents</button>
+        <button class="nav-link" data-route="dsp"><span>◇</span>Dossier DSP</button>
+        <button class="nav-link" data-route="exports"><span>⇧</span>Exports et sauvegarde</button>
+        <button class="nav-link" data-route="settings"><span>⚙</span>Paramètres</button>
+      </nav>
+      <div class="privacy-note"><span class="status-dot"></span><strong>Données locales</strong><br>Rien n’est transmis à un serveur.</div>
+    </aside>
 
-    <div class="card" id="cardForm">
-      <div class="sub">
-        <span><b>Service</b></span>
-        <span class="badge">Obligatoire</span>
-      </div>
-    
-      <div class="grid2">
+    <main class="main">
+      <header class="topbar">
+        <button id="menuButton" class="icon-button mobile-only" aria-label="Ouvrir le menu">☰</button>
         <div>
-          <label>Date fin service <span class="req">*</span></label>
-          <input id="dateFin" type="date" />
-          <div class="err" id="err_dateFin">Champ obligatoire.</div>
+          <h1 id="pageTitle">Tableau de bord</h1>
+          <p id="pageSubtitle">Référentiel RF / CPMA et activité professionnelle</p>
         </div>
-      
-      <div>
-        <label>Options rapides</label>
-        <div class="row" style="gap:6px; flex-wrap:wrap;">
-          <label class="check mini" style="margin:0; user-select:none; padding:8px 10px;">
-            <input id="onlyNoct" type="checkbox" />
-            Noctilien
-          </label>
-      
-          <label class="check mini" style="margin:0; user-select:none; padding:8px 10px;">
-            <input id="service2x" type="checkbox" />
-            2x
-          </label>
+        <div class="top-actions">
+          <span id="dbStatus" class="status-chip">Initialisation…</span>
+          <button id="installButton" class="button secondary hidden">Installer</button>
         </div>
-      </div>
-      
-      <div class="grid2" style="margin-top:10px; grid-template-columns: 0.9fr 1.1fr;">
-        <div>
-          <label>Service <span class="req">*</span></label>
-          <input id="service" inputmode="numeric" maxlength="5" />
-          <div class="err" id="err_service">Champ obligatoire.</div>
-        </div>
-      
-        <div>
-          <label>Ligne <span class="req">*</span></label>
-          <select id="ligne" aria-label="Ligne">
-            <option value="">— Choisir —</option>
-          </select>
-          <div class="err" id="err_ligne">Champ obligatoire.</div>
-        </div>
-      </div>
-      
-      <div class="grid2" style="margin-top:10px; grid-template-columns: 0.9fr 1.1fr;">
-        <div>
-          <label>Police <span class="req">*</span></label>
-          <input id="police" inputmode="numeric" maxlength="5" />
-          <div class="err" id="err_police">Champ obligatoire.</div>
-        </div>
-      
-        <div>
-          <label>Coquille <span class="req">*</span></label>
-          <input id="coquille" inputmode="numeric" maxlength="5" />
-          <div class="err" id="err_coquille">Champ obligatoire.</div>
-        </div>
-      </div>
-    
-      <div class="grid2" style="margin-top:10px;">
-        <div>
-          <label>Début (HHMM)</label>
-          <input id="debut" inputmode="numeric" maxlength="4" />
-        </div>
-        
-        <div>
-          <label>Fin (HHMM)</label>
-          <input id="fin" inputmode="numeric" maxlength="4" />
-        </div>
-      </div>
-    
-      <div class="hr"></div>
+      </header>
 
-      <div class="row" style="margin-top:10px; gap:6px;">
-        <label class="check mini" style="margin:0; user-select:none; padding:8px 10px;">
-          <input id="retard" type="checkbox" />
-          Retard
-        </label>
-        <label class="check mini" style="margin:0; user-select:none; padding:8px 10px;">
-          <input id="decalage" type="checkbox" />
-          Décalage
-        </label>
-      </div>
+      <div id="loading" class="loading-panel"><div class="spinner"></div><strong>Préparation de la base locale…</strong></div>
 
-      <div id="service2xWrap" class="hidden" style="margin-top:10px;">
-        <div class="grid2">
+      <section id="view-dashboard" class="view active" data-view="dashboard">
+        <div class="hero-card">
           <div>
-            <label>Début 2 (HHMM) <span class="hint">(si 2×)</span></label>
-            <input id="debut2" inputmode="numeric" placeholder="ex: 1530" maxlength="4" />
+            <span class="eyebrow">Référentiel validé · février 2023 → mai 2026</span>
+            <h2>Reconstitution RF / CPMA sur 40 mois</h2>
+            <p>Suivi parallèle du compteur officiel et du compteur théorique personnel, avec contrôle des écritures CPMA et des ajustements reconnus.</p>
           </div>
-          <div>
-            <label>Fin 2 (HHMM) <span class="hint">(si 2×)</span></label>
-            <input id="fin2" inputmode="numeric" placeholder="ex: 2150" maxlength="4" />
-          </div>
-        </div>
-      </div>
-      
-      <div id="retardWrap" class="hidden" style="margin-top:10px;">
-      
-      <div class="sub">
-        <span><b>Retard</b></span>
-      </div>
-      
-        <div class="row" style="margin-top:10px;">
-          <label class="check" style="margin:0; user-select:none;">
-            <input id="retardPart1" type="checkbox" />
-            Retard 1re partie
-          </label>
-      
-          <label id="retardPart2CheckWrap" class="check hidden" style="margin:0; user-select:none;">
-            <input id="retardPart2" type="checkbox" />
-            Retard 2e partie
-          </label>
-        </div>
-      
-        <div id="retardPart1Wrap" class="hidden" style="margin-top:10px;">
-          <div class="grid2">
-            <div>
-              <label>Fin réelle 1re partie (HHMM)</label>
-              <input id="finReelle1" inputmode="numeric" placeholder="ex: 1410" maxlength="4" />
-            </div>
-            <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
-              Partie 1 : renseigne l’heure réelle de fin si un retard a effectivement eu lieu.
-            </div>
+          <div class="hero-actions">
+            <button class="button primary" data-goto="rf">Ouvrir la synthèse</button>
+            <button class="button light" data-goto="imports">Importer un bulletin</button>
           </div>
         </div>
-      
-        <div id="retardPart2Wrap" class="hidden" style="margin-top:10px;">
-          <div class="grid2">
-            <div>
-              <label>Fin réelle 2e partie (HHMM)</label>
-              <input id="finReelle2" inputmode="numeric" placeholder="ex: 2215" maxlength="4" />
-            </div>
-            <div class="hint" style="border:1px dashed var(--border); border-radius:14px; padding:10px 12px;">
-              Partie 2 : renseigne l’heure réelle de fin si la seconde vacation a fini en retard.
-            </div>
+
+        <div id="kpiGrid" class="kpi-grid"></div>
+
+        <div class="dashboard-grid">
+          <article class="panel chart-panel">
+            <div class="panel-header"><div><h3>Évolution comparée</h3><p>RF officiel et cumul théorique personnel</p></div><span class="legend"><i class="official"></i>Officiel <i class="personal"></i>Théorique</span></div>
+            <div id="rfChart" class="chart-wrap"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-header"><div><h3>Points de contrôle</h3><p>Anomalies et pièces justificatives</p></div></div>
+            <div id="controlList" class="stack-list"></div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid lower">
+          <article class="panel"><div class="panel-header"><div><h3>Derniers services</h3><p>Journal personnel</p></div><button class="text-button" data-goto="journal">Tout voir</button></div><div id="recentServices" class="stack-list"></div></article>
+          <article class="panel"><div class="panel-header"><div><h3>Dernière période analysée</h3><p id="latestMonthLabel"></p></div></div><div id="latestMonthCard"></div></article>
+        </div>
+      </section>
+
+      <section id="view-journal" class="view" data-view="journal">
+        <div class="two-column layout-form-list">
+          <article class="panel sticky-panel">
+            <div class="panel-header"><div><h3 id="serviceFormTitle">Nouveau service</h3><p>Saisie rapide avec calcul des durées</p></div><button id="resetServiceForm" class="text-button">Réinitialiser</button></div>
+            <form id="serviceForm" class="form-grid">
+              <input type="hidden" id="serviceId">
+              <label>Date de fin de service<input id="serviceDate" type="date" required></label>
+              <label>Unité opérationnelle<select id="serviceUo"><option>BELLIARD</option><option>AUBER</option><option>AUTRE</option></select></label>
+              <label>Ligne<input id="serviceLine" list="lineList" placeholder="N02, 80…" required></label>
+              <datalist id="lineList"></datalist>
+              <label>N° de service<input id="serviceNumber" inputmode="numeric" required></label>
+              <label>Police<input id="servicePolice" inputmode="numeric"></label>
+              <label>Coquille<input id="serviceVehicle" inputmode="numeric"></label>
+              <label>Début<input id="serviceStart" inputmode="numeric" maxlength="4" placeholder="2230"></label>
+              <label>Fin<input id="serviceEnd" inputmode="numeric" maxlength="4" placeholder="0615"></label>
+              <label class="checkbox-field span-2"><input id="serviceSplit" type="checkbox">Service en deux vacations</label>
+              <div id="splitFields" class="subgrid span-2 hidden"><label>Début 2<input id="serviceStart2" inputmode="numeric" maxlength="4"></label><label>Fin 2<input id="serviceEnd2" inputmode="numeric" maxlength="4"></label></div>
+              <fieldset class="span-2"><legend>Événements</legend><div class="checkbox-row"><label><input id="serviceDelay" type="checkbox">Retard</label><label><input id="serviceShift" type="checkbox">Décalage</label><label><input id="serviceIncident" type="checkbox">Incident</label><label><input id="serviceAccident" type="checkbox">Accident</label></div></fieldset>
+              <label class="span-2">Lieu / repère<input id="serviceLocation" placeholder="Terminus, arrêt, secteur…"></label>
+              <label class="span-2">Note<textarea id="serviceNote" rows="4" placeholder="Faits, consignes, observations…"></textarea></label>
+              <div id="durationPreview" class="calculation-box span-2">Durée calculée : —</div>
+              <button class="button primary span-2" type="submit">Enregistrer le service</button>
+            </form>
+          </article>
+          <article class="panel">
+            <div class="panel-header"><div><h3>Historique des services</h3><p id="serviceCount"></p></div></div>
+            <div class="filter-bar"><input id="serviceSearch" type="search" placeholder="Rechercher ligne, service, note…"><input id="serviceFilterDate" type="month"><button id="clearServiceFilters" class="button secondary">Effacer</button></div>
+            <div id="serviceList" class="record-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="view-rf" class="view" data-view="rf">
+        <article class="panel">
+          <div class="panel-header wrap-header">
+            <div><h3>Synthèse annuelle RF</h3><p>Lecture mensuelle des compteurs officiel et théorique personnel</p></div>
+            <div class="button-row"><select id="rfYearFilter"><option value="">Toutes les années</option></select><select id="rfUoFilter"><option value="">Toutes les UO</option><option>AUBER</option><option>BELLIARD</option></select><button id="recalculateRF" class="button secondary">Recalculer</button></div>
           </div>
+          <div class="table-help">Contrôle mensuel : ouverture officielle + mouvement RF + CPMA − clôture officielle. L’ajustement reconnu est isolé de ce contrôle.</div>
+          <div class="table-scroll"><table class="data-table dense"><thead><tr><th>Période</th><th>UO</th><th>Solde RF début mois</th><th>Somme RF du mois</th><th>Ajustement reconnu</th><th>Solde théorique avant CPMA</th><th>CPMA</th><th>Solde RF bulletin</th><th>Cumul RF théorique personnel</th><th>Écart cumulé</th><th>Contrôle</th><th></th></tr></thead><tbody id="rfTableBody"></tbody></table></div>
+        </article>
+        <div class="dashboard-grid lower">
+          <article class="panel"><div class="panel-header"><div><h3>Répartition des heures</h3><p>Travail normal, RT présumés et TS assimilés</p></div></div><div id="hoursSummary"></div></article>
+          <article class="panel"><div class="panel-header"><div><h3>Méthodologie</h3><p>Règles appliquées au référentiel</p></div></div><div id="methodologyCard" class="methodology"></div></article>
         </div>
-      
-      </div>
+      </section>
 
-      <div id="decalageWrap" class="hidden" style="margin-top:10px;">
-
-      <div class="sub">
-        <span><b>Décalage</b></span>
-      </div>
-
-        <div class="grid2">
-
-        <div>
-          <label>Décalage prévu début (HHMM)</label>
-          <input id="decalagePrevDebut" inputmode="numeric" placeholder="ex: 1015" maxlength="4" />
+      <section id="view-imports" class="view" data-view="imports">
+        <div class="dashboard-grid">
+          <article class="panel import-card">
+            <div class="import-icon">XLSX</div><h3>Importer le classeur de reconstitution</h3><p>Lecture locale des feuilles « Analyse CPMA » et 2023 à 2026. Les données sont préparées puis soumises à validation avant remplacement.</p>
+            <label class="file-button">Choisir un classeur<input id="xlsxInput" type="file" accept=".xlsx,.xlsm"></label>
+            <div id="xlsxImportStatus" class="import-status"></div>
+          </article>
+          <article class="panel import-card">
+            <div class="import-icon pdf">PDF</div><h3>Importer les bulletins de pointage</h3><p>Sélection multiple, rapprochement automatique par période et conservation du PDF comme pièce source. L’extraction textuelle est assistée et doit être contrôlée.</p>
+            <label class="file-button">Choisir des PDF<input id="pdfInput" type="file" accept="application/pdf,.pdf" multiple></label>
+            <div id="pdfImportStatus" class="import-status"></div>
+          </article>
         </div>
+        <article id="importPreviewPanel" class="panel hidden"><div class="panel-header"><div><h3>Vérification avant validation</h3><p id="importPreviewSummary"></p></div><div class="button-row"><button id="cancelImport" class="button secondary">Annuler</button><button id="confirmImport" class="button primary">Valider l’import</button></div></div><div id="importPreview"></div></article>
+        <article class="panel"><div class="panel-header"><div><h3>Pièces sources et contrôles</h3><p id="documentCount"></p></div><div class="button-row"><select id="documentStatusFilter"><option value="">Tous les statuts</option><option value="matched">Rapproché</option><option value="review">À vérifier</option><option value="validated">Validé</option></select></div></div><div class="table-scroll"><table class="data-table"><thead><tr><th>Période</th><th>Fichier</th><th>Rapprochement</th><th>Extraction</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="documentTableBody"></tbody></table></div></article>
+      </section>
 
-        <div>
-          <label>Décalage prévu fin (HHMM)</label>
-          <input id="decalagePrevFin" inputmode="numeric" placeholder="ex: 1045" maxlength="4" />
+      <section id="view-incidents" class="view" data-view="incidents">
+        <div class="two-column layout-form-list">
+          <article class="panel sticky-panel"><div class="panel-header"><div><h3 id="incidentFormTitle">Nouvel événement</h3><p>Fiche factuelle exploitable pour un rapport</p></div><button id="resetIncidentForm" class="text-button">Réinitialiser</button></div>
+            <form id="incidentForm" class="form-grid"><input id="incidentId" type="hidden"><label>Date<input id="incidentDate" type="date" required></label><label>Nature<select id="incidentType"><option>Incident exploitation</option><option>Accident matériel</option><option>Accident corporel</option><option>Agression / sûreté</option><option>Défaut infrastructure</option><option>Autre</option></select></label><label>Ligne<input id="incidentLine"></label><label>Service<input id="incidentService"></label><label class="span-2">Lieu<input id="incidentLocation" required></label><label class="span-2">Description factuelle<textarea id="incidentDescription" rows="6" required></textarea></label><label class="span-2">Mesures prises / interlocuteurs<textarea id="incidentActions" rows="4"></textarea></label><label>Statut<select id="incidentStatus"><option>Ouvert</option><option>Transmis</option><option>Clos</option></select></label><label>Référence<input id="incidentReference" placeholder="Rapport, déclaration…"></label><button class="button primary span-2" type="submit">Enregistrer l’événement</button></form>
+          </article>
+          <article class="panel"><div class="panel-header"><div><h3>Registre des événements</h3><p id="incidentCount"></p></div></div><div id="incidentList" class="record-list"></div></article>
         </div>
+      </section>
 
-        <div>
-          <label>Décalage réalisé début (HHMM)</label>
-          <input id="decalageRealDebut" inputmode="numeric" placeholder="ex: 1020" maxlength="4" />
+      <section id="view-dsp" class="view" data-view="dsp">
+        <div class="hero-card compact"><div><span class="eyebrow">Dossier professionnel</span><h2>DSP — Lot 49</h2><p>Paramètres de référence, suivi des journées exécutées et éléments de garantie de rémunération.</p></div></div>
+        <div class="dashboard-grid">
+          <article class="panel"><div class="panel-header"><div><h3>Paramètres</h3><p>Modifiables et conservés localement</p></div></div><form id="dspForm" class="form-grid"><label>Lot<input id="dspLot"></label><label>Exploitant<input id="dspOperator"></label><label class="span-2">Centres<input id="dspCentres"></label><label>Début période de référence<input id="dspStart" type="date"></label><label>Fin période de référence<input id="dspEnd" type="date"></label><label>Jours planifiés annuels<input id="dspPlannedDays" type="number"></label><label>Jours exécutés constatés<input id="dspExecutedDays" type="number"></label><label class="span-2">Notes<textarea id="dspNote" rows="6"></textarea></label><button class="button primary span-2" type="submit">Enregistrer les paramètres</button></form></article>
+          <article class="panel"><div class="panel-header"><div><h3>Lecture synthétique</h3><p>Indicateurs de travail</p></div></div><div id="dspSummary"></div></article>
         </div>
+      </section>
 
-        <div>
-          <label>Décalage réalisé fin (HHMM)</label>
-          <input id="decalageRealFin" inputmode="numeric" placeholder="ex: 1050" maxlength="4" />
+      <section id="view-exports" class="view" data-view="exports">
+        <div class="export-grid">
+          <article class="panel export-card"><h3>Classeur Excel complet</h3><p>Synthèse RF, données quotidiennes, journal, incidents, documents et méthodologie.</p><button id="exportXlsx" class="button primary">Exporter en .xlsx</button></article>
+          <article class="panel export-card"><h3>Dossier PDF</h3><p>Rapport imprimable : synthèse Direction, tableau mensuel, méthodologie et incidents.</p><button id="exportPdf" class="button primary">Préparer le PDF</button></article>
+          <article class="panel export-card"><h3>Sauvegarde complète</h3><p>Archive JSON de la base locale. Les PDF peuvent être inclus, ce qui augmente fortement la taille.</p><label class="checkbox-field"><input id="includePdfBackup" type="checkbox">Inclure les fichiers PDF</label><button id="exportBackup" class="button secondary">Télécharger la sauvegarde</button></article>
+          <article class="panel export-card"><h3>Restaurer une sauvegarde</h3><p>Import d’une sauvegarde Journal Machiniste PRO après vérification.</p><label class="file-button">Choisir le JSON<input id="restoreInput" type="file" accept="application/json,.json"></label></article>
+          <article class="panel export-card"><h3>Journal CSV</h3><p>Export plat des services pour contrôle ou traitement externe.</p><button id="exportCsv" class="button secondary">Exporter le CSV</button></article>
         </div>
+      </section>
 
-    </div>
-
-      <div class="row" style="margin-top:10px;">
-        <label class="check" style="margin:0; user-select:none;">
-        <input id="decalageNonRealise" type="checkbox" />
-        Décalage non réalisé
-        </label>
-      </div>
-
+      <section id="view-settings" class="view" data-view="settings">
+        <div class="dashboard-grid">
+          <article class="panel"><div class="panel-header"><div><h3>Règles RF</h3><p>Valeurs utilisées pour les contrôles et futures saisies</p></div></div><form id="rulesForm" class="form-grid"><label>Jour travaillé<input id="ruleWorked" type="number" step="0.001"></label><label>Dimanche travaillé<input id="ruleSunday" type="number" step="0.001"></label><label>RF pris<input id="ruleTaken" type="number" step="0.001"></label><label>Point zéro<input id="rulePointZero" type="number" step="0.001"></label><button class="button primary span-2" type="submit">Enregistrer les règles</button></form></article>
+          <article class="panel"><div class="panel-header"><div><h3>Maintenance</h3><p>Opérations sensibles</p></div></div><div class="maintenance-actions"><button id="resetHistorical" class="button secondary">Réinitialiser les 40 mois</button><button id="clearDocuments" class="button secondary">Supprimer les PDF locaux</button><button id="clearAllData" class="button danger">Effacer toute l’application</button></div><p class="warning-box">Une sauvegarde est recommandée avant toute suppression. Les données supprimées localement ne peuvent pas être récupérées par l’application.</p></article>
+        </div>
+        <article class="panel"><div class="panel-header"><div><h3>À propos</h3><p>Journal Machiniste PRO v5.0.0</p></div></div><div class="about-grid"><div><strong>Stockage</strong><span>IndexedDB, sur cet appareil</span></div><div><strong>Référentiel</strong><span>40 mois · 1 216 journées</span></div><div><strong>Confidentialité</strong><span>Aucun envoi automatique</span></div><div><strong>PWA</strong><span>Installable et utilisable hors ligne</span></div></div></article>
+      </section>
+    </main>
   </div>
 
-      <div class="hr"></div>
-
-      <div class="sub">
-        <span><b>Événement</b></span>
-      </div>
-
-      <div class="row" style="gap:6px;">
-        <label class="check mini" style="margin:0; user-select:none; padding:8px 10px;">
-          <input id="incident" type="checkbox" />
-          Incident
-        </label>
-        <label class="check mini" style="margin:0; user-select:none; padding:8px 10px;">
-          <input id="accident" type="checkbox" />
-          Accident
-        </label>
-      </div>
-
-      <div id="flagWrap" class="hidden" style="margin-top:10px;">
-        <label>Flag 621M–619K</label>
-        <select id="flag">
-          <option value="">—</option>
-          <option value="621M">621M</option>
-          <option value="619K">619K</option>
-        </select>
-        <div class="hint">Visible uniquement si Incident ou Accident est coché.</div>
-      </div>
-
-      <div style="margin-top:10px;">
-        <label>Note</label>
-        <textarea id="note" placeholder="Station, faits marquants, décisions CRIV, etc."></textarea>
-      </div>
-
-      <div class="btnrow">
-        <button class="primary" id="btnSave">Enregistrer</button>
-        <button class="ghost" id="btnReset">Réinitialiser</button>
-      </div>
-
-      <div class="btnrow" style="margin-top:10px;">
-        <button class="primary" id="btnQuickBackup">Sauvegarde rapide</button>
-        <button class="ghost" id="btnReminder">Rappel sauvegarde</button>
-      </div>
-
-      <div class="btnrow">
-        <button class="secondary" id="btnJsonExport">Exporter JSON</button>
-        <button class="ghost" id="btnJsonImport">Importer JSON</button>
-      </div>
-
-      <div class="smallnote" style="margin-top:10px;">
-        Champs obligatoires : Date, Ligne, Service, Coquille, Police.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sub">
-        <span><b>Recherche</b></span>
-        <span class="badge" id="countBadge">0 enregistrement</span>
-      </div>
-
-      <div class="grid2">
-        <div>
-          <label>Date</label>
-          <input id="searchDate" type="date" />
-        </div>
-        <div>
-          <label>Texte</label>
-          <input id="searchText" placeholder="N15, coquille, note..." />
-        </div>
-
-        <div>
-          <label>Ligne</label>
-          <input id="filterLine" placeholder="26, N15..." />
-        </div>
-        <div>
-          <label>Service</label>
-          <input id="filterService" placeholder="80, 702..." />
-        </div>
-      </div>
-
-      <div class="hr"></div>
-
-      <div class="sub">
-        <span><b>Impression / export</b></span>
-      </div>
-      
-      <div class="grid2" style="margin-top:10px;">
-        <div>
-          <label>Du</label>
-          <input id="rangeFrom" type="date" />
-        </div>
-        <div>
-          <label>Au</label>
-          <input id="rangeTo" type="date" />
-        </div>
-      </div>
-
-      <div class="btnrow" style="margin-top:12px;">
-        <button class="ghost" id="btnPrintRange">Imprimer plage</button>
-        <button class="ghost" id="btnExportRange">Exporter CSV (plage)</button>
-      </div>
-
-      <div class="btnrow" style="margin-top:10px;">
-        <button class="ghost" id="btnPrintWeek">Imprimer semaine</button>
-        <button class="ghost" id="btnExportWeek">Exporter CSV semaine</button>
-      </div>
-
-      <div class="btnrow" style="margin-top:10px;">
-        <button class="secondary" id="btnExportAll">Exporter CSV (tout)</button>
-        <button class="danger" id="btnWipe">⚠ Effacer tout</button>
-      </div>
-
-      <div class="hr"></div>
-
-      <div class="sub">
-        <span><b>Sauvegarde</b></span>
-      </div>
-
-      <div class="btnrow">
-        <button class="secondary" id="btnJsonExport">Exporter JSON</button>
-        <button class="ghost" id="btnJsonImport">Importer JSON</button>
-      </div>
-
-      <div class="btnrow" style="margin-top:10px;">
-        <button class="ghost" id="btnKey">Voir clé anti-doublon</button>
-      </div>
-
-      <input id="jsonFile" type="file" accept="application/json" class="hidden"/>
-
-      <div class="smallnote" style="margin-top:10px;">
-        Les données restent dans le navigateur. Utilise Exporter JSON pour sauvegarder ou transférer.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sub">
-        <span><b>Services enregistrés</b></span>
-        <span class="badge" id="filterBadge">Aucun filtre (0)</span>
-      </div>
-      <div id="searchResult" class="hint" style="margin-bottom:8px;"></div>
-      <div id="list" class="list"></div>
-    </div>
-  </div>
-
-<script>
-(() => {
-  const LINES_ALL = ["20","26","29","38","39","40","46","48","56","57","60","69","76","77","80","86","87","96","102","109","115","121","122","129","202","215","245","318","322","341","N01","N02","N13","N41","N42","N43","N44","N45","N51","N52","N53"];
-  const LS_KEY = "journal_machiniste_pro_v32";
-
-  const LAST_CTX_KEY = "journal_machiniste_last_ctx_v1";
-  const DRAFT_KEY = "journal_machiniste_draft_v1";
-
-  const $ = (id) => document.getElementById(id);
-  const state = { items: [], lastKeyExplain: "" };
-
-  function todayISO() {
-    const d = new Date();
-    const z = new Date(d.getTime() - d.getTimezoneOffset()*60000);
-    return z.toISOString().slice(0,10);
-  }
-  function cleanHHMM(v) { if (!v) return ""; return String(v).replace(/\D/g,"").slice(0,4); }
-  function isValidHHMM(s) {
-    if (!s) return true;
-    if (!/^\d{4}$/.test(s)) return false;
-    const hh = parseInt(s.slice(0,2),10);
-    const mm = parseInt(s.slice(2,4),10);
-    return hh>=0 && hh<=23 && mm>=0 && mm<=59;
-  }
-  function normalizeLine(v) { return String(v||"").trim().toUpperCase(); }
-  function normalizeService(v) { return String(v||"").trim(); }
-  function normalizeHHMMInputValue(raw, padLeft = false) {
-    const digits = String(raw || "").replace(/\D/g, "").slice(0, 4);
-  
-    if (!digits) return "";
-    if (padLeft && digits.length === 3) return "0" + digits;
-  
-    return digits;
-  }
-
-  function enhanceHHMMField(id) {
-    const el = $(id);
-    if (!el) return;
-  
-    el.addEventListener("input", () => {
-      el.value = normalizeHHMMInputValue(el.value, false);
-    });
-  
-    el.addEventListener("blur", () => {
-      el.value = normalizeHHMMInputValue(el.value, true);
-    });
-  }
-
-  function linkHHMMFields(fromId, toId) {
-    const from = $(fromId);
-    const to = $(toId);
-    if (!from || !to) return;
-  
-    from.addEventListener("input", () => {
-      const digits = String(from.value || "").replace(/\D/g, "");
-      if (digits.length >= 4) {
-        to.focus();
-        to.select?.();
-      }
-    });
-  }
-  
-  function load() {
-    try {
-      // v3.2 : nouvelle clé de stockage (pour évolution sans casser l'ancien)
-      let raw = localStorage.getItem(LS_KEY);
-
-      // Migration automatique depuis v3.1 si v3.2 vide
-      if (!raw) {
-        const old = localStorage.getItem("journal_machiniste_pro_v31");
-        if (old) {
-          raw = old;
-          localStorage.setItem(LS_KEY, old);
-        }
-      }
-
-      state.items = raw ? JSON.parse(raw) : [];
-      if (!Array.isArray(state.items)) state.items = [];
-    } catch(e) { state.items = []; }
-  }
-  function save() { localStorage.setItem(LS_KEY, JSON.stringify(state.items)); }
-
-  function formatDateFR(iso) {
-    if (!iso) return "";
-    const [y,m,d] = iso.split("-");
-    return `${d}/${m}/${y}`;
-  }
-
-  function makeKey(item) {
-    const hasHours = item.debut && item.fin;
-    const key = hasHours
-      ? `${item.dateFin}|${item.ligne}|${item.service}|${item.debut}|${item.fin}`
-      : `${item.dateFin}|${item.ligne}|${item.service}|${item.coquille}|${item.police}`;
-    state.lastKeyExplain = hasHours
-      ? "date + ligne + service + début + fin"
-      : "date + ligne + service + coquille + police";
-    return key;
-  }
-
-  function renderCount() {
-    $("countBadge").textContent = `${state.items.length} enregistrement${state.items.length>1?"s":""}`;
-  }
-  
-  function setError(id, show) {
-    const el = $(id);
-    if (!el) return;
-    el.style.display = show ? "block" : "none";
-  }
-
-  function fillLineSelect() {
-    const noct = $("onlyNoct").checked;
-    const select = $("ligne");
-    const current = select.value;
-    const lines = noct
-      ? LINES_ALL.filter(x => x.startsWith("N"))
-      : LINES_ALL.filter(x => !x.startsWith("N"));
-    select.innerHTML = '<option value="">— Choisir —</option>' +
-      lines.map(x => `<option value="${x}">${x}</option>`).join("");
-    if (lines.includes(current)) select.value = current;
-  }
-
-  function getForm() {
-    return {
-      dateFin: $("dateFin").value,
-      ligne: normalizeLine($("ligne").value),
-      service: normalizeService($("service").value),
-      coquille: normalizeService($("coquille").value),
-      police: normalizeService($("police").value),
-      flag: $("flag").value,
-      debut: cleanHHMM($("debut").value),
-      fin: cleanHHMM($("fin").value),
-      service2x: $("service2x").checked ? 1 : 0,
-      retard: $("retard").checked ? 1 : 0,
-      retardPart1: $("retardPart1").checked ? 1 : 0,
-      retardPart2: $("retardPart2").checked ? 1 : 0,
-      finReelle1: cleanHHMM($("finReelle1").value),
-      finReelle2: cleanHHMM($("finReelle2").value),
-      debut2: cleanHHMM($("debut2").value),
-      fin2: cleanHHMM($("fin2").value),
-      incident: $("incident").checked ? 1 : 0,
-      accident: $("accident").checked ? 1 : 0,
-      decalage: $("decalage").checked ? 1 : 0,
-      decalagePrevDebut: cleanHHMM($("decalagePrevDebut").value),
-      decalagePrevFin: cleanHHMM($("decalagePrevFin").value),
-      decalageRealDebut: cleanHHMM($("decalageRealDebut").value),
-      decalageRealFin: cleanHHMM($("decalageRealFin").value),
-      decalageNonRealise: $("decalageNonRealise").checked ? 1 : 0,
-      note: ($("note").value || "").trim(),
-      ts: new Date().toISOString(),
-    };
-  }
-
-  function saveDraft() {
-    const draft = {
-      dateFin: $("dateFin")?.value || "",
-      onlyNoct: $("onlyNoct")?.checked ? 1 : 0,
-      ligne: $("ligne")?.value || "",
-      service2x: $("service2x")?.checked ? 1 : 0,
-  
-      service: $("service")?.value || "",
-      police: $("police")?.value || "",
-      coquille: $("coquille")?.value || "",
-  
-      fin: $("fin")?.value || "",
-      debut: $("debut")?.value || "",
-  
-      retard: $("retard")?.checked ? 1 : 0,
-      retardPart1: $("retardPart1")?.checked ? 1 : 0,
-      retardPart2: $("retardPart2")?.checked ? 1 : 0,
-      finReelle1: $("finReelle1")?.value || "",
-      finReelle2: $("finReelle2")?.value || "",
-  
-      debut2: $("debut2")?.value || "",
-      fin2: $("fin2")?.value || "",
-  
-      decalage: $("decalage")?.checked ? 1 : 0,
-      decalagePrevDebut: $("decalagePrevDebut")?.value || "",
-      decalagePrevFin: $("decalagePrevFin")?.value || "",
-      decalageRealDebut: $("decalageRealDebut")?.value || "",
-      decalageRealFin: $("decalageRealFin")?.value || "",
-      decalageNonRealise: $("decalageNonRealise")?.checked ? 1 : 0,
-  
-      incident: $("incident")?.checked ? 1 : 0,
-      accident: $("accident")?.checked ? 1 : 0,
-      flag: $("flag")?.value || "",
-      note: $("note")?.value || ""
-    };
-  
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-  }
-
-  function loadDraft() {
-    try {
-      const raw = localStorage.getItem(DRAFT_KEY);
-      if (!raw) return;
-  
-      const d = JSON.parse(raw);
-  
-      if ("dateFin" in d) $("dateFin").value = d.dateFin || "";
-      if ("onlyNoct" in d) $("onlyNoct").checked = !!d.onlyNoct;
-      fillLineSelect();
-      if ("ligne" in d) $("ligne").value = d.ligne || "";
-  
-      if ("service2x" in d) $("service2x").checked = !!d.service2x;
-  
-      if ("service" in d) $("service").value = d.service || "";
-      if ("police" in d) $("police").value = d.police || "";
-      if ("coquille" in d) $("coquille").value = d.coquille || "";
-  
-      if ("fin" in d) $("fin").value = d.fin || "";
-      if ("debut" in d) $("debut").value = d.debut || "";
-  
-      if ("retard" in d) $("retard").checked = !!d.retard;
-      if ("retardPart1" in d) $("retardPart1").checked = !!d.retardPart1;
-      if ("retardPart2" in d) $("retardPart2").checked = !!d.retardPart2;
-      if ("finReelle1" in d) $("finReelle1").value = d.finReelle1 || "";
-      if ("finReelle2" in d) $("finReelle2").value = d.finReelle2 || "";
-  
-      if ("debut2" in d) $("debut2").value = d.debut2 || "";
-      if ("fin2" in d) $("fin2").value = d.fin2 || "";
-  
-      if ("decalage" in d) $("decalage").checked = !!d.decalage;
-      if ("decalagePrevDebut" in d) $("decalagePrevDebut").value = d.decalagePrevDebut || "";
-      if ("decalagePrevFin" in d) $("decalagePrevFin").value = d.decalagePrevFin || "";
-      if ("decalageRealDebut" in d) $("decalageRealDebut").value = d.decalageRealDebut || "";
-      if ("decalageRealFin" in d) $("decalageRealFin").value = d.decalageRealFin || "";
-      if ("decalageNonRealise" in d) $("decalageNonRealise").checked = !!d.decalageNonRealise;
-  
-      if ("incident" in d) $("incident").checked = !!d.incident;
-      if ("accident" in d) $("accident").checked = !!d.accident;
-      if ("flag" in d) $("flag").value = d.flag || "";
-      if ("note" in d) $("note").value = d.note || "";
-  
-      refreshService2xVisibility();
-      refreshRetardVisibility();
-      refreshDecalageVisibility();
-      refreshFlagVisibility();
-  
-    } catch (e) {
-      // brouillon corrompu : on ignore
-    }
-  }
-  
-  function validate(item) {
-    let ok = true;
-    const required = [
-      ["dateFin","err_dateFin"],
-      ["ligne","err_ligne"],
-      ["service","err_service"],
-      ["coquille","err_coquille"],
-      ["police","err_police"],
-    ];
-    for (const [field, errId] of required) {
-      const v = item[field];
-      const missing = !v || String(v).trim()==="";
-      setError(errId, missing);
-      if (missing) ok = false;
-    }
-    const hhFields = ["debut","fin","debut2","fin2","finReelle1","finReelle2","decalagePrevDebut","decalagePrevFin","decalageRealDebut","decalageRealFin"];
-    for (const f of hhFields) {
-      const el = $(f);
-      const v = item[f];
-      const good = isValidHHMM(v);
-      if (el) el.style.borderColor = good ? "var(--border)" : "var(--danger)";
-      if (!good) ok = false;
-    }
-    return ok;
-  }
-
-  function resetForm() {
-    $("dateFin").value = todayISO();
-    $("ligne").value = "";
-    $("service").value = "";
-    $("coquille").value = "";
-    $("police").value = "";
-    $("flag").value = "";
-    
-    $("debut").value = "";
-    $("fin").value = "";
-    
-    $("service2x").checked = false;
-    $("debut2").value = "";
-    $("fin2").value = "";
-    
-    $("retard").checked = false;
-    $("retardPart1").checked = false;
-    $("retardPart2").checked = false;
-    $("finReelle1").value = "";
-    $("finReelle2").value = "";
-    
-    $("decalage").checked = false;
-    $("decalagePrevDebut").value = "";
-    $("decalagePrevFin").value = "";
-    $("decalageRealDebut").value = "";
-    $("decalageRealFin").value = "";
-    $("decalageNonRealise").checked = false;
-    
-    $("incident").checked = false;
-    $("accident").checked = false;
-    $("note").value = "";
-    
-    ["err_dateFin", "err_ligne", "err_service", "err_coquille", "err_police"]
-        .forEach(id => setError(id, false));
-    
-    [
-      "debut",
-      "fin",
-      "debut2",
-      "fin2",
-      "finReelle1",
-      "finReelle2",
-      "decalagePrevDebut",
-      "decalagePrevFin",
-      "decalageRealDebut",
-      "decalageRealFin"
-    ].forEach(id => {
-      const el = $(id);
-      if (el) el.style.borderColor = "var(--border)";
-    });
-    
-    refreshFlagVisibility();
-    refreshDecalageVisibility();
-    refreshService2xVisibility();
-    refreshRetardVisibility();
-    
-    setTimeout(() => {
-      $("incident").checked = false;
-      $("accident").checked = false;
-      $("flag").value = "";
-      $("note").value = "";
-      refreshFlagVisibility();
-    }, 0);
-  }
-
-  function refreshService2xVisibility() {
-    const show = $("service2x").checked;
-    $("service2xWrap").classList.toggle("hidden", !show);
-  
-    if (!show) {
-      $("debut2").value = "";
-      $("fin2").value = "";
-    }
-  }
-  
-  function refreshRetardVisibility() {
-    const showRetard = $("retard").checked;
-    const show2x = $("service2x").checked;
-  
-    $("retardWrap").classList.toggle("hidden", !showRetard);
-  
-    // Si on enlève complètement le retard, on remet tout à zéro
-    if (!showRetard) {
-      $("retardPart1").checked = false;
-      $("retardPart2").checked = false;
-      $("finReelle1").value = "";
-      $("finReelle2").value = "";
-    }
-  
-    // La 2e partie n'existe que si service 2x
-    $("retardPart2CheckWrap").classList.toggle("hidden", !(showRetard && show2x));
-  
-    // Si on n'est pas en 2x, on purge la partie 2
-    if (!show2x) {
-      $("retardPart2").checked = false;
-      $("finReelle2").value = "";
-    }
-  
-    // Affichage fin réelle partie 1
-    $("retardPart1Wrap").classList.toggle("hidden", !(showRetard && $("retardPart1").checked));
-  
-    if (!($("retardPart1").checked)) {
-      $("finReelle1").value = "";
-    }
-  
-    // Affichage fin réelle partie 2
-    $("retardPart2Wrap").classList.toggle("hidden", !(showRetard && show2x && $("retardPart2").checked));
-  
-    if (!(show2x && $("retardPart2").checked)) {
-      $("finReelle2").value = "";
-    }
-  }
-  
-  function refreshFlagVisibility() {
-    const show = $("incident").checked || $("accident").checked;
-    $("flagWrap").classList.toggle("hidden", !show);
-    // Hygiène : si on retire l’événement, on efface le flag pour éviter un "flag fantôme"
-    if (!show) $("flag").value = "";
-  }
-
-  function refreshDecalageVisibility() {
-
-    const show = $("decalage").checked;
-
-      $("decalageWrap").classList.toggle("hidden", !show);
-
-    if (!show) {
-      $("decalagePrevDebut").value = "";
-      $("decalagePrevFin").value = "";
-      $("decalageRealDebut").value = "";
-      $("decalageRealFin").value = "";
-      $("decalageNonRealise").checked = false;
-  }
-
-  const disableReal = $("decalageNonRealise").checked;
-
-  $("decalageRealDebut").disabled = disableReal;
-  $("decalageRealFin").disabled = disableReal;
-
-  if (disableReal) {
-    $("decalageRealDebut").value = "";
-    $("decalageRealFin").value = "";
-  }
-
-}
-  function upsert(item) {
-    const key = makeKey(item);
-    item.key = key;
-    const idx = state.items.findIndex(x => x.key === key);
-    if (idx >= 0) { state.items[idx] = item; return {mode:"update", key}; }
-    state.items.unshift(item);
-    return {mode:"insert", key};
-  }
-
-  function escapeHtml(s) {
-    return String(s)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  function matchesFilters(item) {
-    const sd = $("searchDate").value;
-    const st = ($("searchText").value || "").trim().toLowerCase();
-    const fl = ($("filterLine").value || "").trim().toLowerCase();
-    const fs = ($("filterService").value || "").trim().toLowerCase();
-
-    let ok = true;
-    if (sd) ok = ok && item.dateFin === sd;
-    if (fl) ok = ok && String(item.ligne||"").toLowerCase().includes(fl);
-    if (fs) ok = ok && String(item.service||"").toLowerCase().includes(fs);
-
-    if (st) {
-      const blob = [
-        item.dateFin, item.ligne, item.service, item.coquille, item.police,
-        item.debut, item.fin, item.debut2, item.fin2, item.finReelle1, item.finReelle2,
-        item.flag, item.note, item.incident, item.accident, item.retard
-      ].join(" ").toLowerCase();
-      ok = ok && blob.includes(st);
-    }
-    return ok;
-  }
-
-  function renderSearchByDateMessage() {
-    const sd = $("searchDate").value;
-    const box = $("searchResult");
-    if (!sd) { box.textContent = ""; return; }
-
-    const match = state.items.find(x => x.dateFin === sd);
-    if (!match) {
-      box.innerHTML = `<span class="warn"><b>Aucun service</b> ce jour-là (${formatDateFR(sd)}).</span>`;
-      return;
-    }
-    box.innerHTML = `<span class="ok"><b>Service trouvé</b> pour ${formatDateFR(sd)} : ligne <b>${match.ligne}</b>, service <b>${match.service}</b>, coquille <b>${match.coquille}</b>, police <b>${match.police}</b>.</span>`;
-  }
-
-  function saveLastContext() {
-    const ctx = {
-      ligne: $("ligne")?.value || "",
-      onlyNoct: $("onlyNoct")?.checked ? 1 : 0,
-      coquille: $("coquille")?.value || "",
-      police: $("police")?.value || ""
-    };
-    localStorage.setItem(LAST_CTX_KEY, JSON.stringify(ctx));
-  }
-  
-  function loadLastContext() {
-    try {
-      const raw = localStorage.getItem(LAST_CTX_KEY);
-      if (!raw) return;
-      const ctx = JSON.parse(raw);
-  
-      if (ctx.ligne) $("ligne").value = ctx.ligne;
-      if (ctx.coquille) $("coquille").value = ctx.coquille;
-      if (ctx.police) $("police").value = ctx.police;
-      if ("onlyNoct" in ctx) $("onlyNoct").checked = !!ctx.onlyNoct;
-  
-      fillLineSelect();
-    } catch (e) {
-      // silence volontaire
-    }
-  }
-
-  function renderList() {
-    renderCount();
-    renderSearchByDateMessage();
-
-    const list = $("list");
-    const filtered = state.items.filter(matchesFilters);
-
-    $("filterBadge").textContent = ( $("searchDate").value || $("searchText").value || $("filterLine").value || $("filterService").value )
-      ? `Filtré (${filtered.length})`
-      : `Aucun filtre (${filtered.length})`;
-
-    if (filtered.length === 0) {
-      list.innerHTML = `<div class="hint">Aucun service pour ce filtre.</div>`;
-      return;
-    }
-
-    list.innerHTML = filtered.map(item => {
-      const tags = [];
-      if (item.incident) tags.push("Incident");
-      if (item.accident) tags.push("Accident");
-      if (item.retard) tags.push("Retard");
-      if (item.service2x) tags.push("2×");
-      const tagHtml = tags.length ? ` · <span class="badge">${tags.join(" · ")}</span>` : "";
-
-      let decalageTxt = "";
-
-      if (item.decalage) {
-        if (item.decalageNonRealise) {
-          decalageTxt = "Décalage non réalisé";
-        } else if (item.decalageRealDebut || item.decalageRealFin) {
-          decalageTxt = ` · Décalage: <b>${item.decalageRealDebut || "?"}-${item.decalageRealFin || "?"}</b>`;
-        } else if (item.decalagePrevDebut || item.decalagePrevFin) {
-          decalageTxt = ` · Décalage prévu: <b>${item.decalagePrevDebut || "?"}-${item.decalagePrevFin || "?"}</b>`;
-        } else {
-          decalageTxt = " · Décalage";
-        }
-      }
-      const hours = (item.debut && item.fin) ? `${item.debut}-${item.fin}` : "";
-      const hours2 = (item.service2x && item.debut2 && item.fin2) ? ` / ${item.debut2}-${item.fin2}` : "";
-      const finReelle =
-        item.retardPart1 && item.finReelle1
-          ? ` · fin réelle 1: ${item.finReelle1}`
-          : item.retardPart2 && item.finReelle2
-          ? ` · fin réelle 2: ${item.finReelle2}`
-          : "";
-
-      const note = item.note ? item.note : "";
-      const flag = (item.flag !== "" && item.flag !== null && item.flag !== undefined) ? item.flag : "";
-
-      return `
-        <div class="item">
-          <div class="row" style="justify-content:space-between;">
-            <div>
-              <b>${formatDateFR(item.dateFin)} — L${item.ligne} / S${item.service}</b>${tagHtml}
-              <div class="hint">Coquille: <b>${item.coquille}</b> · Police: <b>${item.police}</b>${flag!=="" ? ` · 621M–619K: <b>${flag}</b>` : ""}</div>
-              <div class="hint">Horaires: <b>${hours ? hours + hours2 : "—"}</b>${finReelle}${decalageTxt}</div>
-            </div>
-            <div class="right">
-              <button class="ghost mini" data-edit="${item.key}">Éditer</button>
-              <button class="danger mini" data-del="${item.key}">Suppr.</button>
-            </div>
-          </div>
-          ${note ? `<div class="hr"></div><div class="hint"><b>Note</b><br/>${escapeHtml(note).replace(/\n/g,"<br/>")}</div>` : ""}
-          <div class="smallnote">clé: <span class="mono">${item.key}</span></div>
-        </div>
-      `;
-    }).join("");
-
-    list.querySelectorAll("button[data-del]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const key = btn.getAttribute("data-del");
-        if (!confirm("Supprimer cet enregistrement ?")) return;
-        state.items = state.items.filter(x => x.key !== key);
-        save();
-        renderList();
-      });
-    });
-
-    list.querySelectorAll("button[data-edit]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const key = btn.getAttribute("data-edit");
-        const item = state.items.find(x => x.key === key);
-        if (!item) return;
-
-        $("dateFin").value = item.dateFin || "";
-        $("ligne").value = item.ligne || "";
-        $("service").value = item.service || "";
-        $("coquille").value = item.coquille || "";
-        $("police").value = item.police || "";
-
-        $("debut").value = item.debut || "";
-        $("fin").value = item.fin || "";
-        $("service2x").checked = !!item.service2x;
-        $("retard").checked = !!item.retard;
-        $("retardPart1").checked = !!item.retardPart1;
-        $("retardPart2").checked = !!item.retardPart2;
-        $("finReelle1").value = item.finReelle1 || "";
-        $("finReelle2").value = item.finReelle2 || "";
-        $("debut2").value = item.debut2 || "";
-        
-        $("fin2").value = item.fin2 || "";
-
-        $("incident").checked = !!item.incident;
-        $("accident").checked = !!item.accident;
-        $("decalage").checked = !!item.decalage;
-        $("decalagePrevDebut").value = item.decalagePrevDebut || "";
-        $("decalagePrevFin").value = item.decalagePrevFin || "";
-        $("decalageRealDebut").value = item.decalageRealDebut || "";
-        $("decalageRealFin").value = item.decalageRealFin || "";
-        $("decalageNonRealise").checked = !!item.decalageNonRealise;
-        refreshFlagVisibility();
-        refreshDecalageVisibility();
-        refreshService2xVisibility();
-        refreshRetardVisibility();
-        $("flag").value = item.flag || "";
-        $("note").value = item.note || "";
-
-        window.scrollTo({top:0, behavior:"smooth"});
-      });
-    });
-  }
-
-  function withinRange(dateISO, fromISO, toISO) {
-    if (!fromISO && !toISO) return true;
-    if (fromISO && dateISO < fromISO) return false;
-    if (toISO && dateISO > toISO) return false;
-    return true;
-  }
-
-  function toCSV(items) {
-    const header = [
-      "date_fin_service","ligne","service","coquille","police","flag_621m_619k",
-      "debut_hhmm","fin_hhmm","service_2x","debut2_hhmm","fin2_hhmm",
-      "retard","retard_part1","retard_part2","fin_reelle1_hhmm","fin_reelle2_hhmm",
-      "decalage","decalage_prev_debut","decalage_prev_fin","decalage_real_debut","decalage_real_fin","decalage_non_realise",
-      "incident","accident","note","cle_antidoublon","timestamp_iso"
-    ];
-    const esc = (v) => '"' + String(v ?? "").replaceAll('"','""') + '"';
-    const rows = items.map(x => [
-      x.dateFin, x.ligne, x.service, x.coquille, x.police, x.flag,
-      x.debut, x.fin, x.service2x, x.debut2, x.fin2,
-      x.retard, x.retardPart1, x.retardPart2, x.finReelle1, x.finReelle2,
-      x.decalage, x.decalagePrevDebut,
-      x.decalagePrevFin, x.decalageRealDebut, x.decalageRealFin,
-      x.decalageNonRealise, x.incident, x.accident,
-      (x.note||"").replace(/\r?\n/g,"\\n"),
-      x.key, x.ts
-    ].map(esc).join(","));
-    return header.join(",") + "\n" + rows.join("\n");
-  }
-
-  function download(filename, content, mime) {
-    const blob = new Blob([content], {type: mime});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
-  }
-
-  function printRange(items) {
-    const w = window.open("", "_blank");
-    const html = `
-      <html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-      <title>Impression — Journal Machiniste</title>
-      <style>
-        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; padding:14px;}
-        h1{font-size:18px;}
-        .item{border:1px solid #ddd; border-radius:12px; padding:10px; margin:10px 0;}
-        .muted{color:#555; font-size:12px;}
-        .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;}
-      </style></head><body>
-      <h1>Journal Machiniste — impression (${items.length} entrées)</h1>
-      ${items.map(x => `
-        <div class="item">
-          <b>${formatDateFR(x.dateFin)} — Ligne ${x.ligne} / Service ${x.service}</b>
-          <div class="muted">Coquille: <b>${x.coquille}</b> · Police: <b>${x.police}</b>${x.flag!=="" && x.flag!=null ? ` · 621M–619K: <b>${x.flag}</b>` : ""}</div>
-          <div class="muted">Horaires: <b>${x.debut && x.fin ? `${x.debut}-${x.fin}` : "—"}</b>${x.service2x && x.debut2 && x.fin2 ? ` / <b>${x.debut2}-${x.fin2}</b>` : ""}${x.retard && x.finReelle ? ` · fin réelle: <b>${x.finReelle}</b>` : ""}</div>
-          ${x.note ? `<div class="muted"><b>Note</b><br/>${escapeHtml(x.note).replace(/\n/g,"<br/>")}</div>` : ""}
-          <div class="muted mono">clé: ${escapeHtml(x.key||"")}</div>
-        </div>
-      `).join("")}
-      <script>window.onload=()=>{window.print();}<\/script>
-      </body></html>
-    `;
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
-  }
-
-  function getMonday(dateStr) {
-  const d = new Date(dateStr);
-  const day = d.getDay(); // 0=dimanche, 1=lundi...
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  return d.toISOString().slice(0, 10);
-  }
-
-  function getSunday(dateStr) {
-  const d = new Date(getMonday(dateStr));
-  d.setDate(d.getDate() + 6);
-  return d.toISOString().slice(0, 10);
-  }
-  
-  // events
-  $("onlyNoct").addEventListener("change", fillLineSelect);
-  ["searchDate","searchText","filterLine","filterService"].forEach(id => $(id).addEventListener("input", renderList));
-
-  ["incident","accident"].forEach(id => $(id).addEventListener("change", refreshFlagVisibility));
-
-  $("service2x").addEventListener("change", () => {
-    refreshService2xVisibility();
-    refreshRetardVisibility();
-  });
-  
-  $("retard").addEventListener("change", refreshRetardVisibility);
-
-  $("retardPart1").addEventListener("change", refreshRetardVisibility);
-  
-  $("retardPart2").addEventListener("change", refreshRetardVisibility);
-  
-  $("decalage").addEventListener("change", refreshDecalageVisibility);
-  
-  $("decalageNonRealise").addEventListener("change", refreshDecalageVisibility);
-  
-  $("btnSave").addEventListener("click", () => {
-    const item = getForm();
-    const ok = validate(item);
-    if (!ok) {
-      alert("Vérifie les champs obligatoires et le format HHMM (4 chiffres).");
-      return;
-    }
-  
-    const r = upsert(item);
-    saveLastContext();
-    save();
-  
-    localStorage.removeItem(DRAFT_KEY);
-  
-    resetForm();
-    renderList();
-  
-    alert(r.mode === "insert" ? "Enregistré." : "Mis à jour (anti-doublon).");
-  });
-
-  $("btnReset").addEventListener("click", () => {
-    localStorage.removeItem(DRAFT_KEY);
-    resetForm();
-  });
-
-  $("btnExportAll").addEventListener("click", () => {
-    const csv = toCSV(state.items.slice().reverse());
-    download(`journal_machiniste_${todayISO()}_tout.csv`, csv, "text/csv;charset=utf-8");
-  });
-
-  $("btnExportRange").addEventListener("click", () => {
-    const from = $("rangeFrom").value;
-    const to = $("rangeTo").value;
-    const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
-    download(`journal_machiniste_${todayISO()}_plage.csv`, toCSV(items), "text/csv;charset=utf-8");
-  });
-
-  $("btnPrintRange").addEventListener("click", () => {
-    const from = $("rangeFrom").value;
-    const to = $("rangeTo").value;
-    const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
-    printRange(items);
-  });
-
-  $("btnWipe").addEventListener("click", () => {
-    if (!confirm("EFFACER TOUTES les données de ce navigateur ?")) return;
-    if (!confirm("Dernier avertissement : c'est irréversible sans JSON/CSV.")) return;
-    state.items = [];
-    save();
-    renderList();
-  });
-
-  $("btnJsonExport").addEventListener("click", () => {
-    const payload = {version:"v3.2", exported_at:new Date().toISOString(), items: state.items};
-    download(`journal_machiniste_${todayISO()}.json`, JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
-  });
-
-  $("btnJsonImport").addEventListener("click", () => $("jsonFile").click());
-  $("jsonFile").addEventListener("change", async (ev) => {
-    const file = ev.target.files && ev.target.files[0];
-    ev.target.value = "";
-    if (!file) return;
-    try {
-      const payload = JSON.parse(await file.text());
-      if (!payload || !Array.isArray(payload.items)) throw new Error("Format JSON invalide.");
-      state.items = payload.items;
-      save();
-      renderList();
-      alert("JSON importé (restauré).");
-    } catch(e) {
-      alert("Import JSON impossible : " + e.message);
-    }
-  });
-
-    const btnIphone = $("btnIphone");
-    if (btnIphone) {
-      btnIphone.addEventListener("click", () => {
-        alert("iPhone (Safari) : 'Partager' → 'Sur l'écran d'accueil' pour l'ouvrir comme une icône.\n\nLes données sont locales à Safari. Pense à exporter JSON régulièrement.");
-  });
-}
-
-  $("btnKey").addEventListener("click", () => {
-    alert("Clé anti-doublon :\n- Avec horaires: date + ligne + service + début + fin\n- Sans horaires: date + ligne + service + coquille + police");
- });
-
-  $("btnPrintWeek").addEventListener("click", () => {
-  const baseDate = $("searchDate").value || todayISO();
-  const from = getMonday(baseDate);
-  const to = getSunday(baseDate);
-  const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
-  printRange(items);
-});
-
-$("btnExportWeek").addEventListener("click", () => {
-  const baseDate = $("searchDate").value || todayISO();
-  const from = getMonday(baseDate);
-  const to = getSunday(baseDate);
-  const items = state.items.filter(x => withinRange(x.dateFin, from, to)).slice().reverse();
-  download(
-    `journal_machiniste_semaine_${from}_${to}.csv`,
-    toCSV(items),
-    "text/csv;charset=utf-8"
-  );
-});
-
-  [
-    "dateFin",
-    "onlyNoct",
-    "ligne",
-    "service2x",
-    "service",
-    "police",
-    "coquille",
-    "fin",
-    "debut",
-    "retard",
-    "retardPart1",
-    "retardPart2",
-    "finReelle1",
-    "finReelle2",
-    "debut2",
-    "fin2",
-    "decalage",
-    "decalagePrevDebut",
-    "decalagePrevFin",
-    "decalageRealDebut",
-    "decalageRealFin",
-    "decalageNonRealise",
-    "incident",
-    "accident",
-    "flag",
-    "note"
-  ].forEach(id => {
-    const el = $(id);
-    if (!el) return;
-    el.addEventListener("input", saveDraft);
-    el.addEventListener("change", saveDraft);
-  });
-  
-  // init
-  load();
-  fillLineSelect();
-  resetForm();
-  loadDraft();
-  refreshDecalageVisibility();
-  refreshService2xVisibility();
-  refreshRetardVisibility();
-  [
-    "debut",
-    "fin",
-    "debut2",
-    "fin2",
-    "finReelle1",
-    "finReelle2",
-    "decalagePrevDebut",
-    "decalagePrevFin",
-    "decalageRealDebut",
-    "decalageRealFin"
-  ].forEach(enhanceHHMMField);
-  linkHHMMFields("debut", "fin");
-  linkHHMMFields("debut2", "fin2");
-  linkHHMMFields("decalagePrevDebut", "decalagePrevFin");
-  linkHHMMFields("decalageRealDebut", "decalageRealFin");
-  renderList();
-})();
-</script>
+  <nav class="bottom-nav mobile-only" aria-label="Navigation mobile"><button class="active" data-route="dashboard">▦<span>Accueil</span></button><button data-route="journal">▤<span>Journal</span></button><button data-route="rf">∑<span>RF</span></button><button data-route="imports">⇩<span>Imports</span></button><button data-route="more">•••<span>Plus</span></button></nav>
+
+  <dialog id="monthDialog" class="modal"><form method="dialog" class="modal-card"><div class="modal-header"><div><h3 id="monthDialogTitle"></h3><p id="monthDialogSubtitle"></p></div><button class="icon-button" value="cancel" aria-label="Fermer">×</button></div><div id="monthDialogBody"></div><div class="modal-actions"><button class="button secondary" value="cancel">Fermer</button><button id="saveMonthEdit" class="button primary" value="default" type="button">Enregistrer</button></div></form></dialog>
+  <dialog id="documentDialog" class="modal wide"><form method="dialog" class="modal-card"><div class="modal-header"><div><h3 id="documentDialogTitle">Contrôle du bulletin</h3><p id="documentDialogSubtitle"></p></div><button class="icon-button" value="cancel" aria-label="Fermer">×</button></div><div id="documentDialogBody"></div><div class="modal-actions"><button class="button secondary" value="cancel">Fermer</button><button id="validateDocument" class="button primary" type="button">Marquer comme validé</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="vendor/jszip.min.js"></script>
+  <script src="seed-data.js"></script>
+  <script src="db.js"></script>
+  <script src="xlsx-lite.js"></script>
+  <script src="pdf-lite.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

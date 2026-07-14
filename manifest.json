@@ -1,21 +1,22 @@
 {
-  "name": "Journal Machiniste — PRO",
-  "short_name": "Journal RATP",
+  "name": "Journal Machiniste PRO",
+  "short_name": "Machiniste PRO",
+  "description": "Journal professionnel local : services, RF, CPMA, RT, TS, incidents, DSP et exports.",
+  "id": "./index.html",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f6f7fb",
-  "theme_color": "#2563eb",
+  "orientation": "any",
+  "background_color": "#f3f6f9",
+  "theme_color": "#0b2f53",
+  "lang": "fr-FR",
+  "categories": ["productivity", "business", "utilities"],
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ],
+  "shortcuts": [
+    {"name":"Nouveau service","short_name":"Service","url":"./index.html#journal","icons":[{"src":"icon-192.png","sizes":"192x192"}]},
+    {"name":"Analyse RF / CPMA","short_name":"RF / CPMA","url":"./index.html#rf","icons":[{"src":"icon-192.png","sizes":"192x192"}]}
   ]
 }
